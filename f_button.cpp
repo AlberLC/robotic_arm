@@ -1,7 +1,7 @@
 #pragma once
 
-#include "f_waiter.cpp"
 #include "arduino.h"
+#include "f_waiter.cpp"
 
 class MyButton {
    private:
@@ -32,10 +32,8 @@ class MyButton {
             waiter.wait(debounceDelay, currentTime);
         }
 
-        if (waiter.isExceeded(currentTime)) {
-            if (reading != state) {
-                state = reading;
-            }
+        if (waiter.isExceeded(currentTime) and reading != state) {
+            state = reading;
         }
 
         lastReading = reading;
@@ -44,9 +42,9 @@ class MyButton {
     }
 
     bool pressed(unsigned long currentTime, bool risingEdge = true) {
-        int state = read(currentTime);
+        read(currentTime);
 
-        if (lastState == state) return false;
+        if (state == lastState) return false;
 
         lastState = state;
 
