@@ -1,5 +1,5 @@
-#include "f_servo.cpp"
 #include "f_button.cpp"
+#include "f_servo.cpp"
 
 ServoTool servoTool;
 MyServo servo1;
@@ -32,10 +32,10 @@ void loop() {
         sTGoing = not sTGoing;
         if (sTGoing) {
             servoTool.close();
-            servoTool.wait(5000, currentTime);
+            servoTool.waitUntil(currentTime + 5000);
         } else {
             servoTool.open();
-            servoTool.wait(1000, currentTime);
+            servoTool.waitUntil(currentTime + 1000);
         }
     }
     if (servo1.isDone() and servo2.isDone()) {
@@ -47,8 +47,8 @@ void loop() {
             servo1.moveToPosition(100);
             servo2.moveToPosition(90);
         }
-        servo1.wait(1000, currentTime);
-        servo2.wait(1000, currentTime);
+        servo1.waitUntil(currentTime + 1000);
+        servo2.waitUntil(currentTime + 1000);
     }
     if (servo3.isDone()) {
         s3Going = not s3Going;
@@ -57,7 +57,7 @@ void loop() {
         } else {
             servo3.moveToPosition(95);
         }
-        servo3.wait(1000, currentTime);
+        servo3.waitUntil(currentTime + 1000);
     }
     if (servo4.isDone()) {
         s4Going = not s4Going;
@@ -66,7 +66,7 @@ void loop() {
         } else {
             servo4.moveToPosition(170);
         }
-        servo4.wait(1000, currentTime);
+        servo4.waitUntil(currentTime + 1000);
     }
     if (servo5.isDone()) {
         s5Going = not s5Going;
@@ -75,7 +75,7 @@ void loop() {
         } else {
             servo5.moveToPosition(50);
         }
-        servo5.wait(1000, currentTime);
+        servo5.waitUntil(currentTime + 1000);
     }
 
     servoTool.loop(currentTime, 15);

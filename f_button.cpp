@@ -29,7 +29,7 @@ class MyButton {
         int reading = digitalRead(pin);
 
         if (reading != lastReading) {
-            waiter.wait(debounceDelay, currentTime);
+            waiter.waitUntil(debounceDelay, currentTime);
         }
 
         if (waiter.isExceeded(currentTime) and reading != state) {

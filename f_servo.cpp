@@ -1,23 +1,18 @@
 #pragma once
 
-#include "f_waiter.cpp"
 #include "Servo.h"
+#include "f_device.cpp"
 
-class MyServo {
-   public:
-    enum class State { Done,
-                       Waiting,
-                       Working };
-
+class MyServo : public Device {
+   protected:
     Servo *servo;
-    Waiter waiter;
-    State state;
     int finalPos;
 
-    MyServo() {
+   public:
+    MyServo() : Device() {
     }
 
-    MyServo(int pin, int initPos) {
+    MyServo(int pin, int initPos) : Device() {
         servo = new Servo();
         servo->write(initPos);
         servo->attach(pin);
@@ -31,40 +26,21 @@ class MyServo {
     }
 
     void loop(unsigned long currentTime, int retard = 0) {
-        if (isDone()) return;
+        Device::loop(currentTime, retard);
 
         int currentPos = servo->read();
 
+        if (currentPos < finalPos) {
+            currentPos++;
+        } else {
+            currentPos--;
+        }
+
+        servo->write(currentPos);
+
         if (currentPos == finalPos) {
             state = State::Done;
-        } else {
-            if (waiter.isExceeded(currentTime)) {
-                if (currentPos < finalPos) {
-                    currentPos++;
-                } else {
-                    currentPos--;
-                }
-                servo->write(currentPos);
-                wait(retard, currentTime);
-            }
         }
-    }
-
-    void wait(unsigned long waitingTime, unsigned long currentTime) {
-        waiter.wait(waitingTime, currentTime);
-        state = State::Waiting;
-    }
-
-    bool isDone() {
-        return state == State::Done;
-    }
-
-    bool isWaiting() {
-        return state == State::Waiting;
-    }
-
-    bool isWorking() {
-        return state == State::Working;
     }
 };
 
