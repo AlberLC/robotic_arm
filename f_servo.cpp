@@ -6,6 +6,7 @@
 class MyServo : public Device {
    protected:
     Servo *servo;
+    int initPos;
     int finalPos;
 
     void _loop() {
@@ -32,6 +33,7 @@ class MyServo : public Device {
         servo = new Servo();
         servo->write(initPos);
         servo->attach(pin);
+        this->initPos = initPos;
         state = State::Done;
         finalPos = 90;
     }
@@ -39,6 +41,10 @@ class MyServo : public Device {
     void moveToPosition(int finalPos) {
         this->finalPos = finalPos;
         state = State::Working;
+    }
+
+    void moveToInitialPosition() {
+        moveToPosition(initPos);
     }
 };
 

@@ -26,6 +26,9 @@ class Device {
         waitUntil(currentTime + retard);
     }
 
+    void moveToInitialPosition(){        
+    }
+
     void waitUntil(unsigned long goalTime) {
         waiter.waitUntil(goalTime);
         state = State::Waiting;
@@ -54,5 +57,10 @@ class Device {
     void pause() {
         stateBeforePaused = state;
         state = State::Paused;
+    }
+
+    void stop(){
+        moveToInitialPosition();
+        pause();
     }
 };
