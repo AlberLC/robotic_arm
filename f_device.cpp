@@ -13,12 +13,10 @@ class Device {
     State state;
 
     Device() {
-    }
-
-    Device() {
         stateBeforePaused = State::Done;
     }
 
+   public:
     virtual void loop(unsigned long currentTime, int retard = 0) {
         if (isDone() or isPaused() or not waiter.isExceeded(currentTime)) return;
         waitUntil(currentTime + retard);
