@@ -8,6 +8,22 @@ class MyServo : public Device {
     Servo *servo;
     int finalPos;
 
+    void _loop() {
+        int currentPos = servo->read();
+
+        if (currentPos < finalPos) {
+            currentPos++;
+        } else {
+            currentPos--;
+        }
+
+        servo->write(currentPos);
+
+        if (currentPos == finalPos) {
+            state = State::Done;
+        }
+    }
+
    public:
     MyServo() : Device() {
     }
@@ -23,24 +39,6 @@ class MyServo : public Device {
     void moveToPosition(int finalPos) {
         this->finalPos = finalPos;
         state = State::Working;
-    }
-
-    void loop(unsigned long currentTime, int retard = 0) {
-        Device::loop(currentTime, retard);
-
-        int currentPos = servo->read();
-
-        if (currentPos < finalPos) {
-            currentPos++;
-        } else {
-            currentPos--;
-        }
-
-        servo->write(currentPos);
-
-        if (currentPos == finalPos) {
-            state = State::Done;
-        }
     }
 };
 
