@@ -16,7 +16,7 @@ class Device {
         stateBeforePaused = State::Done;
     }
 
-    virtual void _loop() {
+    void _loop() {
     }
 
    public:
