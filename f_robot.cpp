@@ -5,7 +5,7 @@ class Robot {
    public:
     enum class State { Waiting,
                        Paused,
-                       Stoped,
+                       Stopped,
                        Working };
 
     ServoTool servoTool;
