@@ -1,4 +1,3 @@
-
 #include "f_robot.cpp"
 
 Robot robot;

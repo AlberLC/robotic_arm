@@ -3,12 +3,20 @@
 
 class Robot {
    public:
+    enum class State { Waiting,
+                       Paused,
+                       Stoped,
+                       Working };
+
     ServoTool servoTool;
     MyServo servo1;
     MyServo servo2;
     MyServo servo3;
     MyServo servo4;
     MyServo servo5;
+
+    State state;
+
     bool sTGoing;
     bool s12Going;
     bool s3Going;
@@ -23,6 +31,8 @@ class Robot {
         servo3 = MyServo(11, 180);
         servo4 = MyServo(10, 35);
         servo5 = MyServo(9, 90);
+
+        state = State::Stoped;
 
         sTGoing = false;
         s12Going = false;
@@ -89,6 +99,14 @@ class Robot {
         servo3.loop(currentTime, 40);
         servo4.loop(currentTime, 35);
         servo5.loop(currentTime);
+    }
+
+    void playPause() {
+        if (state == State::Paused) {
+            play();
+        } else {
+            pause();
+        }
     }
 
     void play() {
