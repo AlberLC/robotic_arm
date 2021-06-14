@@ -2,18 +2,21 @@
 
 class Waiter {
    private:
-    unsigned long goalTime;
+    unsigned long waitingTime;
+    unsigned long lastTime;
 
    public:
     Waiter() {
-        goalTime = 0;
+        waitingTime = 0;
+        lastTime = 0;
     }
 
-    void waitUntil(unsigned long goalTime) {
-        this->goalTime = goalTime;
+    void wait(unsigned long waitingTime, unsigned long currentTime) {
+        this->waitingTime = waitingTime;
+        lastTime = currentTime;
     }
 
     bool isExceeded(unsigned long currentTime) {
-        return currentTime >= goalTime;
+        return currentTime - lastTime >= waitingTime;
     }
 };

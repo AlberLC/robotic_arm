@@ -32,7 +32,7 @@ class Robot {
         servo4 = MyServo(10, 35);
         servo5 = MyServo(9, 90);
 
-        state = State::Stoped;
+        state = State::Stopped;
 
         sTGoing = false;
         s12Going = false;
@@ -47,10 +47,10 @@ class Robot {
             sTGoing = not sTGoing;
             if (sTGoing) {
                 servoTool.close();
-                servoTool.waitUntil(currentTime + 5000);
+                servoTool.wait(5000, currentTime);
             } else {
                 servoTool.open();
-                servoTool.waitUntil(currentTime + 1000);
+                servoTool.wait(1000, currentTime);
             }
         }
         if (servo1.isDone() and servo2.isDone()) {
@@ -62,8 +62,8 @@ class Robot {
                 servo1.moveToPosition(100);
                 servo2.moveToPosition(90);
             }
-            servo1.waitUntil(currentTime + 1000);
-            servo2.waitUntil(currentTime + 1000);
+            servo1.wait(1000, currentTime);
+            servo2.wait(1000, currentTime);
         }
         if (servo3.isDone()) {
             s3Going = not s3Going;
@@ -72,7 +72,7 @@ class Robot {
             } else {
                 servo3.moveToPosition(95);
             }
-            servo3.waitUntil(currentTime + 1000);
+            servo3.wait(1000, currentTime);
         }
         if (servo4.isDone()) {
             s4Going = not s4Going;
@@ -81,7 +81,7 @@ class Robot {
             } else {
                 servo4.moveToPosition(170);
             }
-            servo4.waitUntil(currentTime + 1000);
+            servo4.wait(1000, currentTime);
         }
         if (servo5.isDone()) {
             s5Going = not s5Going;
@@ -90,7 +90,7 @@ class Robot {
             } else {
                 servo5.moveToPosition(50);
             }
-            servo5.waitUntil(currentTime + 1000);
+            servo5.wait(1000, currentTime);
         }
 
         servoTool.loop(currentTime, 15);

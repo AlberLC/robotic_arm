@@ -23,14 +23,14 @@ class Device {
     void loop(unsigned long currentTime, int retard = 0) {
         if (isDone() or isPaused() or not waiter.isExceeded(currentTime)) return;
         _loop();
-        waitUntil(currentTime + retard);
+        wait(retard, currentTime);
     }
 
     void moveToInitialPosition() {
     }
 
-    void waitUntil(unsigned long goalTime) {
-        waiter.waitUntil(goalTime);
+    void wait(unsigned long waitingTime, unsigned long currentTime) {
+        waiter.wait(waitingTime, currentTime);
         state = State::Waiting;
     }
 
