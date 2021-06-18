@@ -9,5 +9,5 @@ void setup() {
 void loop() {
     unsigned long currentTime = millis();
 
-    robot.testMove(currentTime);
+    robot.testMoveLoop(currentTime);
 }

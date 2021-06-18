@@ -3,9 +3,9 @@
 
 class Robot {
    public:
-    enum class State { Waiting,
+    enum class State { Stopped,
+                       Waiting,
                        Paused,
-                       Stopped,
                        Working };
 
     ServoTool servoTool;
@@ -16,6 +16,7 @@ class Robot {
     MyServo servo5;
 
     State state;
+    Waiter waiter;
 
     bool sTGoing;
     bool s12Going;
@@ -42,7 +43,19 @@ class Robot {
         s6Going = false;
     }
 
-    void testMove(unsigned long currentTime) {
+    bool initLoop(unsigned long currentTime) {
+        if (isStopped() or isPaused() or not waiter.isExceeded(currentTime)) return false;
+
+        if (state != State::Working) {
+            state = State::Working;
+        }
+
+        return true;
+    }
+
+    void testMoveLoop(unsigned long currentTime) {
+        if (not initLoop(currentTime)) return;
+
         if (servoTool.isDone()) {
             sTGoing = not sTGoing;
             if (sTGoing) {
@@ -116,9 +129,13 @@ class Robot {
         servo3.play();
         servo4.play();
         servo5.play();
+
+        state = State::Waiting;
     }
 
     void pause() {
+        state = State::Paused;
+
         servoTool.pause();
         servo1.pause();
         servo2.pause();
@@ -128,11 +145,34 @@ class Robot {
     }
 
     void stop() {
+        state = State::Stopped;
+
         servoTool.stop();
         servo1.stop();
         servo2.stop();
         servo3.stop();
         servo4.stop();
         servo5.stop();
+    }
+
+    void wait(unsigned long waitingTime, unsigned long currentTime) {
+        state = State::Waiting;
+        waiter.wait(waitingTime, currentTime);
+    }
+
+    bool isStopped() {
+        return state == State::Stopped;
+    }
+
+    bool isWaiting() {
+        return state == State::Waiting;
+    }
+
+    bool isPaused() {
+        return state == State::Paused;
+    }
+
+    bool isWorking() {
+        return state == State::Working;
     }
 };

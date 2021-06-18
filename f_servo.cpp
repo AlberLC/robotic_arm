@@ -13,14 +13,10 @@ class MyServo : public Device {
         int currentPos = servo->read();
 
         if (currentPos < finalPos) {
-            currentPos++;
+            servo->write(currentPos + 1);
+        } else if (currentPos > finalPos) {
+            servo->write(currentPos - 1);
         } else {
-            currentPos--;
-        }
-
-        servo->write(currentPos);
-
-        if (currentPos == finalPos) {
             state = State::Done;
         }
     }

@@ -8,12 +8,11 @@ class Device {
                        Waiting,
                        Paused,
                        Working };
-    State stateBeforePaused = State::Done;
     Waiter waiter;
     State state;
 
     Device() {
-        stateBeforePaused = State::Done;
+        state = State::Done;
     }
 
     void _loop() {
@@ -22,7 +21,13 @@ class Device {
    public:
     void loop(unsigned long currentTime, int retard = 0) {
         if (isDone() or isPaused() or not waiter.isExceeded(currentTime)) return;
+
+        if (state != State::Working) {
+            state = State::Working;
+        }
+
         _loop();
+
         wait(retard, currentTime);
     }
 
@@ -30,8 +35,8 @@ class Device {
     }
 
     void wait(unsigned long waitingTime, unsigned long currentTime) {
-        waiter.wait(waitingTime, currentTime);
         state = State::Waiting;
+        waiter.wait(waitingTime, currentTime);
     }
 
     bool isDone() {
@@ -51,11 +56,10 @@ class Device {
     }
 
     void play() {
-        state = stateBeforePaused;
+        state = State::Waiting;
     }
 
     void pause() {
-        stateBeforePaused = state;
         state = State::Paused;
     }
 
