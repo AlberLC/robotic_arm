@@ -1,4 +1,5 @@
-#include "f_robot.cpp"
+#include "f_robot.h"
+#include "f_time.h"
 
 Robot robot;
 
@@ -7,7 +8,8 @@ void setup() {
 }
 
 void loop() {
-    unsigned long currentTime = millis();
+    currentTime = millis();
 
-    robot.testMoveLoop(currentTime);
+    robot.testMoveLoop();
+    robot.stop();
 }

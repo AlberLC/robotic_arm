@@ -1,70 +1,52 @@
-#pragma once
+#include "f_device.h"
 
-#include "f_waiter.cpp"
+Device::Device() {
+    state = State::Done;
+}
 
-class Device {
-   protected:
-    enum class State { Done,
-                       Waiting,
-                       Paused,
-                       Working };
-    Waiter waiter;
-    State state;
+bool Device::initLoop() {
+    if (isDone() or isPaused() or not waiter.isExceeded()) return false;
 
-    Device() {
-        state = State::Done;
+    if (state != State::Working) {
+        state = State::Working;
     }
 
-    void _loop() {
-    }
+    return true;
+}
 
-   public:
-    void loop(unsigned long currentTime, int retard = 0) {
-        if (isDone() or isPaused() or not waiter.isExceeded(currentTime)) return;
+void Device::moveToInitialPosition() {
+}
 
-        if (state != State::Working) {
-            state = State::Working;
-        }
+void Device::wait(unsigned long waitingTime) {
+    state = State::Waiting;
+    waiter.wait(waitingTime);
+}
 
-        _loop();
+bool Device::isDone() {
+    return state == State::Done;
+}
 
-        wait(retard, currentTime);
-    }
+bool Device::isWaiting() {
+    return state == State::Waiting;
+}
 
-    void moveToInitialPosition() {
-    }
+bool Device::isPaused() {
+    return state == State::Paused;
+}
 
-    void wait(unsigned long waitingTime, unsigned long currentTime) {
-        state = State::Waiting;
-        waiter.wait(waitingTime, currentTime);
-    }
+bool Device::isWorking() {
+    return state == State::Working;
+}
 
-    bool isDone() {
-        return state == State::Done;
-    }
+void Device::play() {
+    state = State::Waiting;
+}
 
-    bool isWaiting() {
-        return state == State::Waiting;
-    }
+void Device::pause() {
+    state = State::Paused;
+}
 
-    bool isPaused() {
-        return state == State::Paused;
-    }
-
-    bool isWorking() {
-        return state == State::Working;
-    }
-
-    void play() {
-        state = State::Waiting;
-    }
-
-    void pause() {
-        state = State::Paused;
-    }
-
-    void stop() {
-        moveToInitialPosition();
-        pause();
-    }
-};
+void Device::stop() {
+    moveToInitialPosition();
+    pause();
+}

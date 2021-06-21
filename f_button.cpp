@@ -1,53 +1,39 @@
-#pragma once
+#include "f_button.h"
 
-#include "arduino.h"
-#include "f_waiter.cpp"
+MyButton::MyButton() {
+}
 
-class MyButton {
-   private:
-    int pin;
-    bool state;
-    bool lastReading;
-    unsigned debounceDelay;
-    Waiter waiter;
-    bool lastState;
+MyButton::MyButton(int pin) {
+    this->pin = pin;
+    pinMode(pin, INPUT);
+    state = false;
+    lastReading = false;
+    debounceDelay = 50;
+    lastState = false;
+}
 
-   public:
-    MyButton() {
+bool MyButton::read() {
+    int reading = digitalRead(pin);
+
+    if (reading != lastReading) {
+        waiter.wait(debounceDelay);
     }
 
-    MyButton(int pin) {
-        this->pin = pin;
-        pinMode(pin, INPUT);
-        state = false;
-        lastReading = false;
-        debounceDelay = 50;
-        lastState = false;
+    if (waiter.isExceeded() and reading != state) {
+        state = reading;
     }
 
-    bool read(unsigned long currentTime) {
-        int reading = digitalRead(pin);
+    lastReading = reading;
 
-        if (reading != lastReading) {
-            waiter.wait(debounceDelay, currentTime);
-        }
+    return state;
+}
 
-        if (waiter.isExceeded(currentTime) and reading != state) {
-            state = reading;
-        }
+bool MyButton::pressed(bool risingEdge = true) {
+    read();
 
-        lastReading = reading;
+    if (state == lastState) return false;
 
-        return state;
-    }
+    lastState = state;
 
-    bool pressed(unsigned long currentTime, bool risingEdge = true) {
-        read(currentTime);
-
-        if (state == lastState) return false;
-
-        lastState = state;
-
-        return (risingEdge and state) or (not risingEdge and not state);
-    }
-};
+    return (risingEdge and state) or (not risingEdge and not state);
+}

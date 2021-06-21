@@ -1,178 +1,152 @@
-#include "f_button.cpp"
-#include "f_servo.cpp"
+#include "f_robot.h"
 
-class Robot {
-   public:
-    enum class State { Stopped,
-                       Waiting,
-                       Paused,
-                       Working };
+Robot::Robot() {
+    servoTool = ServoTool(8, 90);
+    servo1 = MyServo(13, 180);
+    servo2 = MyServo(12, 10);
+    servo3 = MyServo(11, 180);
+    servo4 = MyServo(10, 35);
+    servo5 = MyServo(9, 90);
 
-    ServoTool servoTool;
-    MyServo servo1;
-    MyServo servo2;
-    MyServo servo3;
-    MyServo servo4;
-    MyServo servo5;
+    state = State::Stopped;
 
-    State state;
-    Waiter waiter;
+    sTGoing = false;
+    s12Going = false;
+    s3Going = false;
+    s4Going = false;
+    s5Going = false;
+    s6Going = false;
+}
 
-    bool sTGoing;
-    bool s12Going;
-    bool s3Going;
-    bool s4Going;
-    bool s5Going;
-    bool s6Going;
+bool Robot::initLoop() {
+    if (isStopped() or isPaused() or not waiter.isExceeded()) return false;
 
-    Robot() {
-        servoTool = ServoTool(8, 90);
-        servo1 = MyServo(13, 180);
-        servo2 = MyServo(12, 10);
-        servo3 = MyServo(11, 180);
-        servo4 = MyServo(10, 35);
-        servo5 = MyServo(9, 90);
-
-        state = State::Stopped;
-
-        sTGoing = false;
-        s12Going = false;
-        s3Going = false;
-        s4Going = false;
-        s5Going = false;
-        s6Going = false;
+    if (state != State::Working) {
+        state = State::Working;
     }
 
-    bool initLoop(unsigned long currentTime) {
-        if (isStopped() or isPaused() or not waiter.isExceeded(currentTime)) return false;
+    return true;
+}
 
-        if (state != State::Working) {
-            state = State::Working;
-        }
+void Robot::testMoveLoop() {
+    if (not initLoop()) return;
 
-        return true;
-    }
-
-    void testMoveLoop(unsigned long currentTime) {
-        if (not initLoop(currentTime)) return;
-
-        if (servoTool.isDone()) {
-            sTGoing = not sTGoing;
-            if (sTGoing) {
-                servoTool.close();
-                servoTool.wait(5000, currentTime);
-            } else {
-                servoTool.open();
-                servoTool.wait(1000, currentTime);
-            }
-        }
-        if (servo1.isDone() and servo2.isDone()) {
-            s12Going = not s12Going;
-            if (s12Going) {
-                servo1.moveToPosition(95);
-                servo2.moveToPosition(95);
-            } else {
-                servo1.moveToPosition(100);
-                servo2.moveToPosition(90);
-            }
-            servo1.wait(1000, currentTime);
-            servo2.wait(1000, currentTime);
-        }
-        if (servo3.isDone()) {
-            s3Going = not s3Going;
-            if (s3Going) {
-                servo3.moveToPosition(90);
-            } else {
-                servo3.moveToPosition(95);
-            }
-            servo3.wait(1000, currentTime);
-        }
-        if (servo4.isDone()) {
-            s4Going = not s4Going;
-            if (s4Going) {
-                servo4.moveToPosition(10);
-            } else {
-                servo4.moveToPosition(170);
-            }
-            servo4.wait(1000, currentTime);
-        }
-        if (servo5.isDone()) {
-            s5Going = not s5Going;
-            if (s5Going) {
-                servo5.moveToPosition(130);
-            } else {
-                servo5.moveToPosition(50);
-            }
-            servo5.wait(1000, currentTime);
-        }
-
-        servoTool.loop(currentTime, 15);
-        servo1.loop(currentTime, 20);
-        servo2.loop(currentTime, 20);
-        servo3.loop(currentTime, 40);
-        servo4.loop(currentTime, 35);
-        servo5.loop(currentTime);
-    }
-
-    void playPause() {
-        if (state == State::Paused) {
-            play();
+    if (servoTool.isDone()) {
+        sTGoing = not sTGoing;
+        if (sTGoing) {
+            servoTool.close();
+            servoTool.wait(5000);
         } else {
-            pause();
+            servoTool.open();
+            servoTool.wait(1000);
         }
     }
-
-    void play() {
-        servoTool.play();
-        servo1.play();
-        servo2.play();
-        servo3.play();
-        servo4.play();
-        servo5.play();
-
-        state = State::Waiting;
+    if (servo1.isDone() and servo2.isDone()) {
+        s12Going = not s12Going;
+        if (s12Going) {
+            servo1.moveToPosition(95);
+            servo2.moveToPosition(95);
+        } else {
+            servo1.moveToPosition(100);
+            servo2.moveToPosition(90);
+        }
+        servo1.wait(1000);
+        servo2.wait(1000);
+    }
+    if (servo3.isDone()) {
+        s3Going = not s3Going;
+        if (s3Going) {
+            servo3.moveToPosition(90);
+        } else {
+            servo3.moveToPosition(95);
+        }
+        servo3.wait(1000);
+    }
+    if (servo4.isDone()) {
+        s4Going = not s4Going;
+        if (s4Going) {
+            servo4.moveToPosition(10);
+        } else {
+            servo4.moveToPosition(170);
+        }
+        servo4.wait(1000);
+    }
+    if (servo5.isDone()) {
+        s5Going = not s5Going;
+        if (s5Going) {
+            servo5.moveToPosition(130);
+        } else {
+            servo5.moveToPosition(50);
+        }
+        servo5.wait(1000);
     }
 
-    void pause() {
-        state = State::Paused;
+    servoTool.loopSpeed(15);
+    servo1.loopSpeed(20);
+    servo2.loopSpeed(20);
+    servo3.loopSpeed(40);
+    servo4.loopSpeed(35);
+    servo5.loopSpeed();
+}
 
-        servoTool.pause();
-        servo1.pause();
-        servo2.pause();
-        servo3.pause();
-        servo4.pause();
-        servo5.pause();
+void Robot::playPause() {
+    if (state == State::Paused) {
+        play();
+    } else {
+        pause();
     }
+}
 
-    void stop() {
-        state = State::Stopped;
+void Robot::play() {
+    servoTool.play();
+    servo1.play();
+    servo2.play();
+    servo3.play();
+    servo4.play();
+    servo5.play();
 
-        servoTool.stop();
-        servo1.stop();
-        servo2.stop();
-        servo3.stop();
-        servo4.stop();
-        servo5.stop();
-    }
+    state = State::Waiting;
+}
 
-    void wait(unsigned long waitingTime, unsigned long currentTime) {
-        state = State::Waiting;
-        waiter.wait(waitingTime, currentTime);
-    }
+void Robot::pause() {
+    state = State::Paused;
 
-    bool isStopped() {
-        return state == State::Stopped;
-    }
+    servoTool.pause();
+    servo1.pause();
+    servo2.pause();
+    servo3.pause();
+    servo4.pause();
+    servo5.pause();
+}
 
-    bool isWaiting() {
-        return state == State::Waiting;
-    }
+void Robot::stop() {
+    state = State::Stopped;
 
-    bool isPaused() {
-        return state == State::Paused;
-    }
+    servoTool.stop();
+    servo1.stop();
+    servo2.stop();
+    servo3.stop();
+    servo4.stop();
+    servo5.stop();
+}
 
-    bool isWorking() {
-        return state == State::Working;
-    }
-};
+void Robot::wait(unsigned long waitingTime) {
+    state = State::Waiting;
+    waiter.wait(waitingTime);
+}
+
+bool Robot::isStopped() {
+    return state == State::Stopped;
+}
+
+bool Robot::isWaiting() {
+    return state == State::Waiting;
+}
+
+bool Robot::isPaused() {
+    return state == State::Paused;
+}
+
+bool Robot::isWorking() {
+    return state == State::Working;
+}

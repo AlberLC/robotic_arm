@@ -1,58 +1,54 @@
-#pragma once
+#include "f_servo.h"
 
-#include "Servo.h"
-#include "f_device.cpp"
+#include "f_time.h"
 
-class MyServo : public Device {
-   protected:
-    Servo *servo;
-    int initPos;
-    int finalPos;
+MyServo::MyServo() : Device() {
+}
 
-    void _loop() {
-        int currentPos = servo->read();
+MyServo::MyServo(int pin, int initPos) : Device() {
+    servo = new Servo();
+    servo->write(initPos);
+    servo->attach(pin);
+    this->initPos = initPos;
+    state = State::Done;
+    finalPos = 90;
+}
 
-        if (currentPos < finalPos) {
-            servo->write(currentPos + 1);
-        } else if (currentPos > finalPos) {
-            servo->write(currentPos - 1);
-        } else {
-            state = State::Done;
-        }
-    }
+void MyServo::loop(float factor) {
+    if (not initLoop()) return;
 
-   public:
-    MyServo() : Device() {
-    }
+    int currentPos = round(lerp(startPos, finalPos, (currentTime - startTime) / 1000.f * factor));
 
-    MyServo(int pin, int initPos) : Device() {
-        servo = new Servo();
-        servo->write(initPos);
-        servo->attach(pin);
-        this->initPos = initPos;
+    servo->write(currentPos);
+
+    if (currentPos == finalPos) {
         state = State::Done;
-        finalPos = 90;
     }
+}
 
-    void moveToPosition(int finalPos) {
-        this->finalPos = finalPos;
-        state = State::Working;
-    }
+void MyServo::loopSpeed(float speed) {
+    loop(speed / 180);
+}
 
-    void moveToInitialPosition() {
-        moveToPosition(initPos);
-    }
-};
+void MyServo::loopTime(float seconds) {
+    loop(1 / seconds);
+}
 
-class ServoTool : public MyServo {
-   public:
-    using MyServo::MyServo;
+void MyServo::moveToPosition(int finalPos) {
+    startPos = servo->read();
+    this->finalPos = finalPos;
+    startTime = millis();
+    state = State::Working;
+}
 
-    void close() {
-        moveToPosition(0);
-    }
+void MyServo::moveToInitialPosition() {
+    moveToPosition(initPos);
+}
 
-    void open() {
-        moveToPosition(180);
-    }
-};
+void ServoTool::close() {
+    moveToPosition(0);
+}
+
+void ServoTool::open() {
+    moveToPosition(180);
+}
