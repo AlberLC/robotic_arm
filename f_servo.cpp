@@ -37,7 +37,7 @@ void MyServo::loopTime(float seconds) {
 void MyServo::moveToPosition(int finalPos) {
     startPos = servo->read();
     this->finalPos = finalPos;
-    startTime = millis();
+    startTime = currentTime;
     state = State::Working;
 }
 
