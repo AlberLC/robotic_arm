@@ -15,17 +15,32 @@ MyServo::MyServo(int pin, int initPos) : Device() {
     currentSpeed = 0;
 }
 
-void MyServo::updateSpeed(float speed, float elapsedSeconds, int currentPos, float acceleration) {
+int MyServo::getNewPos(float elapsedSeconds) {
+    int maxPos;
+    int minPos;
+
+    if (startPos <= finalPos) {
+        minPos = startPos;
+        maxPos = finalPos;
+    } else {
+        minPos = finalPos;
+        maxPos = startPos;
+    }
+
+    return constrain(round(startPos + elapsedSeconds * currentSpeed * direction), minPos, maxPos);
+}
+
+void MyServo::updateSpeed(float speed, float elapsedSeconds, int pos, float acceleration) {
     int degreeToSlowDown = -1;
     int halfPoint = (startPos + finalPos) / 2;
 
-    if (currentPos < halfPoint and currentSpeed != speed) {
+    if (pos < halfPoint and currentSpeed != speed) {
         currentSpeed = acceleration * elapsedSeconds;
         if (currentSpeed >= speed) {
             currentSpeed = speed;
-            degreeToSlowDown = finalPos - (currentPos - startPos);
+            degreeToSlowDown = finalPos - (pos - startPos);
         }
-    } else if ((degreeToSlowDown == -1 or (startPos <= finalPos and currentPos >= degreeToSlowDown) or (startPos > finalPos and currentPos <= degreeToSlowDown)) and currentSpeed > 0) {
+    } else if ((degreeToSlowDown == -1 or (startPos <= finalPos and pos >= degreeToSlowDown) or (startPos > finalPos and pos <= degreeToSlowDown)) and currentSpeed > 0) {
         currentSpeed -= acceleration * Time::deltaTime / 1000.f;
         if (currentSpeed <= 0) {
             currentSpeed = 0;
@@ -47,29 +62,31 @@ void MyServo::loop(float speed, float acceleration) {
     if (not initLoop(speed, acceleration)) return;
 
     float elapsedSeconds = (Time::currentTime - startTime) / 1000.f;
-    int currentPos = round(lerp(startPos, finalPos, elapsedSeconds * currentSpeed));
+    int pos = getNewPos(elapsedSeconds);
 
-    servo->write(currentPos);
+    servo->write(pos);
 
-    if (currentPos == finalPos) {
+    if (pos == finalPos) {
         state = State::Done;
     } else if (acceleration != -1) {
-        updateSpeed(speed, elapsedSeconds, currentPos, acceleration);
+        updateSpeed(speed, elapsedSeconds, pos, acceleration);
     }
 }
 
 void MyServo::loopSpeed(float speed, float acceleration) {
-    loop(distance / speed / 180, acceleration);
+    loop(speed, acceleration);
 }
 
 void MyServo::loopTime(float seconds, float acceleration) {
-    loop(1 / seconds, acceleration);
+    loop(distance / seconds, acceleration);
 }
 
 void MyServo::moveToPosition(int finalPos) {
     startPos = servo->read();
     this->finalPos = finalPos;
-    distance = abs(finalPos - startPos);
+    int d = finalPos - startPos;
+    distance = abs(d);
+    direction = sign(d);
     startTime = Time::currentTime;
     state = State::Working;
     currentSpeed = 0;

@@ -12,12 +12,14 @@ class MyServo : public Device {
     int startPos;
     int finalPos;
     int distance;
+    int direction;
     unsigned long startTime;
     float currentSpeed;
 
+    int getNewPos(float elapsedSeconds);
+    void updateSpeed(float speed, float elapsedSeconds, int currentPos, float acceleration);
     bool initLoop(float speed, float acceleration);
     void loop(float speed, float acceleration);
-    void updateSpeed(float speed, float elapsedSeconds, int currentPos, float acceleration);
 
    public:
     MyServo();
