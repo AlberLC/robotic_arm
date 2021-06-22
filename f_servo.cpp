@@ -47,7 +47,7 @@ void MyServo::loop(float speed, float acceleration) {
     if (not initLoop(speed, acceleration)) return;
 
     float elapsedSeconds = (Time::currentTime - startTime) / 1000.f;
-    int currentPos = round(lerp(startPos, finalPos, elapsedSeconds * currentSpeed / 180));
+    int currentPos = round(lerp(startPos, finalPos, elapsedSeconds * currentSpeed));
 
     servo->write(currentPos);
 
@@ -59,16 +59,17 @@ void MyServo::loop(float speed, float acceleration) {
 }
 
 void MyServo::loopSpeed(float speed, float acceleration) {
-    loop(speed, acceleration);
+    loop(distance / speed / 180, acceleration);
 }
 
 void MyServo::loopTime(float seconds, float acceleration) {
-    loop(180 / seconds, acceleration);
+    loop(1 / seconds, acceleration);
 }
 
 void MyServo::moveToPosition(int finalPos) {
     startPos = servo->read();
     this->finalPos = finalPos;
+    distance = abs(finalPos - startPos);
     startTime = Time::currentTime;
     state = State::Working;
     currentSpeed = 0;

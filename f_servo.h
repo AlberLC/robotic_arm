@@ -11,6 +11,7 @@ class MyServo : public Device {
     int initPos;
     int startPos;
     int finalPos;
+    int distance;
     unsigned long startTime;
     float currentSpeed;
 
