@@ -8,7 +8,7 @@ void setup() {
 }
 
 void loop() {
-    currentTime = millis();
+    Time::update(millis());
 
     robot.testMoveLoop();
     robot.stop();

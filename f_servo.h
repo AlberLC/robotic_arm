@@ -12,15 +12,18 @@ class MyServo : public Device {
     int startPos;
     int finalPos;
     unsigned long startTime;
+    float currentSpeed;
 
-    void loop(float todo);
+    bool initLoop(float speed, float acceleration);
+    void loop(float speed, float acceleration);
+    void updateSpeed(float speed, float elapsedSeconds, int currentPos, float acceleration);
 
    public:
     MyServo();
     MyServo(int pin, int initPos);
 
-    void loopSpeed(float speed = 1);
-    void loopTime(float seconds = 2);
+    void loopSpeed(float speed = 1, float acceleration = 1);
+    void loopTime(float seconds = 2, float acceleration = 1);
     void moveToPosition(int finalPos);
     void moveToInitialPosition();
 };

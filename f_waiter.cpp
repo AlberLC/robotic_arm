@@ -9,9 +9,9 @@ Waiter::Waiter() {
 
 void Waiter::wait(unsigned long waitingTime) {
     this->waitingTime = waitingTime;
-    lastTime = currentTime;
+    lastTime = Time::currentTime;
 }
 
 bool Waiter::isExceeded() {
-    return currentTime - lastTime >= waitingTime;
+    return Time::currentTime - lastTime >= waitingTime;
 }
