@@ -28,6 +28,9 @@ class Robot {
 
     Robot();
 
+    void setSpeed(float speed);
+    void setDuration(float duration);
+    void setAcceleration(float acceleration);
     bool initLoop();
     void testMoveLoop();
     void loop();

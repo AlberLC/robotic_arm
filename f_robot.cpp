@@ -17,6 +17,33 @@ Robot::Robot() {
     s5Going = false;
 }
 
+void Robot::setSpeed(float speed) {
+    servoTool.setSpeed(speed);
+    servo1.setSpeed(speed);
+    servo2.setSpeed(speed);
+    servo3.setSpeed(speed);
+    servo4.setSpeed(speed);
+    servo5.setSpeed(speed);
+}
+
+void Robot::setDuration(float duration) {
+    servoTool.setSpeed(duration);
+    servo1.setSpeed(duration);
+    servo2.setSpeed(duration);
+    servo3.setSpeed(duration);
+    servo4.setSpeed(duration);
+    servo5.setSpeed(duration);
+}
+
+void Robot::setAcceleration(float acceleration) {
+    servoTool.setSpeed(acceleration);
+    servo1.setSpeed(acceleration);
+    servo2.setSpeed(acceleration);
+    servo3.setSpeed(acceleration);
+    servo4.setSpeed(acceleration);
+    servo5.setSpeed(acceleration);
+}
+
 bool Robot::initLoop() {
     if (isPaused() or not waiter.isExceeded()) return false;
     if (initPosGoing) {
