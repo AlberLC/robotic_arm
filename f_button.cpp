@@ -28,7 +28,7 @@ bool MyButton::read() {
     return state;
 }
 
-bool MyButton::pressed(bool risingEdge = true) {
+bool MyButton::pressed(bool risingEdge) {
     read();
 
     if (state == lastState) return false;

@@ -14,9 +14,6 @@ bool Device::initLoop() {
     return true;
 }
 
-void Device::moveToInitialPosition() {
-}
-
 void Device::wait(unsigned long waitingTime) {
     state = State::Waiting;
     waiter.wait(waitingTime);
@@ -44,9 +41,4 @@ void Device::play() {
 
 void Device::pause() {
     state = State::Paused;
-}
-
-void Device::stop() {
-    moveToInitialPosition();
-    pause();
 }

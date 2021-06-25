@@ -8,18 +8,25 @@ Robot::Robot() {
     servo4 = MyServo(10, 35);
     servo5 = MyServo(9, 90);
 
-    state = State::Stopped;
+    state = State::Paused;
 
-    sTGoing = false;
+    initPosGoing = true;
     s12Going = false;
     s3Going = false;
     s4Going = false;
     s5Going = false;
-    s6Going = false;
 }
 
 bool Robot::initLoop() {
-    if (isStopped() or isPaused() or not waiter.isExceeded()) return false;
+    if (isPaused() or not waiter.isExceeded()) return false;
+    if (initPosGoing) {
+        if (isInInitPos()) {
+            initPosGoing = false;
+            pause();
+        }
+
+        return false;
+    }
 
     if (state != State::Working) {
         state = State::Working;
@@ -32,12 +39,11 @@ void Robot::testMoveLoop() {
     if (not initLoop()) return;
 
     if (servoTool.isDone()) {
-        sTGoing = not sTGoing;
-        if (sTGoing) {
-            servoTool.close();
+        if (servoTool.isClosed()) {
+            servoTool.open();
             servoTool.wait(5000);
         } else {
-            servoTool.open();
+            servoTool.close();
             servoTool.wait(1000);
         }
     }
@@ -81,20 +87,16 @@ void Robot::testMoveLoop() {
         servo5.wait(1000);
     }
 
-    servoTool.loopSpeed(15);
-    servo1.loopSpeed(20);
-    servo2.loopSpeed(20);
-    servo3.loopSpeed(40);
-    servo4.loopSpeed(35);
-    servo5.loopSpeed();
+    loop();
 }
 
-void Robot::playPause() {
-    if (state == State::Paused) {
-        play();
-    } else {
-        pause();
-    }
+void Robot::loop() {
+    servoTool.loop();
+    servo1.loop();
+    servo2.loop();
+    servo3.loop();
+    servo4.loop();
+    servo5.loop();
 }
 
 void Robot::play() {
@@ -119,24 +121,28 @@ void Robot::pause() {
     servo5.pause();
 }
 
-void Robot::stop() {
-    state = State::Stopped;
+void Robot::playPause() {
+    if (state == State::Paused) {
+        play();
+    } else {
+        pause();
+    }
+}
 
-    servoTool.stop();
-    servo1.stop();
-    servo2.stop();
-    servo3.stop();
-    servo4.stop();
-    servo5.stop();
+void Robot::stop() {
+    initPosGoing = true;
+
+    servoTool.moveToInitialPosition();
+    servo1.moveToInitialPosition();
+    servo2.moveToInitialPosition();
+    servo3.moveToInitialPosition();
+    servo4.moveToInitialPosition();
+    servo5.moveToInitialPosition();
 }
 
 void Robot::wait(unsigned long waitingTime) {
     state = State::Waiting;
     waiter.wait(waitingTime);
-}
-
-bool Robot::isStopped() {
-    return state == State::Stopped;
 }
 
 bool Robot::isWaiting() {
@@ -149,4 +155,13 @@ bool Robot::isPaused() {
 
 bool Robot::isWorking() {
     return state == State::Working;
+}
+
+bool Robot::isInInitPos() {
+    return servoTool.isInInitPos() and
+           servo1.isInInitPos() and
+           servo2.isInInitPos() and
+           servo3.isInInitPos() and
+           servo4.isInInitPos() and
+           servo5.isInInitPos();
 }

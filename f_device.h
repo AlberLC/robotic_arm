@@ -8,6 +8,7 @@ class Device {
                        Waiting,
                        Paused,
                        Working };
+
     Waiter waiter;
     State state;
 
@@ -16,7 +17,6 @@ class Device {
     bool initLoop();
 
    public:
-    void moveToInitialPosition();
     void wait(unsigned long waitingTime);
     bool isDone();
     bool isWaiting();
@@ -24,5 +24,4 @@ class Device {
     bool isWorking();
     void play();
     void pause();
-    void stop();
 };

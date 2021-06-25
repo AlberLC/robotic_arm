@@ -17,5 +17,5 @@ class MyButton {
     MyButton(int pin);
 
     bool read();
-    bool pressed(bool risingEdge);
+    bool pressed(bool risingEdge = true);
 };

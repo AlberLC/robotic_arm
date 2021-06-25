@@ -6,9 +6,8 @@
 
 class Robot {
    public:
-    enum class State { Stopped,
+    enum class State { Paused,
                        Waiting,
-                       Paused,
                        Working };
 
     ServoTool servoTool;
@@ -21,24 +20,24 @@ class Robot {
     State state;
     Waiter waiter;
 
-    bool sTGoing;
     bool s12Going;
     bool s3Going;
     bool s4Going;
     bool s5Going;
-    bool s6Going;
+    bool initPosGoing;
 
     Robot();
 
     bool initLoop();
     void testMoveLoop();
-    void playPause();
+    void loop();
     void play();
     void pause();
+    void playPause();
     void stop();
     void wait(unsigned long waitingTime);
-    bool isStopped();
     bool isWaiting();
     bool isPaused();
     bool isWorking();
+    bool isInInitPos();
 };

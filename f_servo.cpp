@@ -6,20 +6,54 @@ MyServo::MyServo() : Device() {
 }
 
 MyServo::MyServo(int pin, int initPos) : Device() {
+    state = State::Done;
+
+    inInitPos = true;
     servo = new Servo();
     servo->write(initPos);
     servo->attach(pin);
     this->initPos = initPos;
-    state = State::Done;
+    startPos = 0;
+    finalPos = 0;
+    currentPos = 0;
+    distance = 0;
+    direction = 0;
+    startTime = 0;
     finalPos = 90;
     currentSpeed = 0;
+    speed = 90;
+    acceleration = 1;
+}
+
+float MyServo::getSpeed() {
+    return speed;
+}
+
+void MyServo::setSpeed(float speed) {
+    this->speed = speed;
+}
+
+float MyServo::getDuration() {
+    return distance / speed;
+}
+
+void MyServo::setDuration(float duration) {
+    speed = distance / duration;
+}
+
+float MyServo::getAcceleration() {
+    return speed;
+}
+
+void MyServo::setAcceleration(float acceleration) {
+    this->acceleration = acceleration;
 }
 
 int MyServo::getNewPos(float elapsedSeconds) {
     int maxPos;
     int minPos;
 
-    if (startPos <= finalPos) {
+    if (direction >= 0) {
         minPos = startPos;
         maxPos = finalPos;
     } else {
@@ -30,17 +64,17 @@ int MyServo::getNewPos(float elapsedSeconds) {
     return constrain(round(startPos + elapsedSeconds * currentSpeed * direction), minPos, maxPos);
 }
 
-void MyServo::updateSpeed(float speed, float elapsedSeconds, int pos, float acceleration) {
+void MyServo::updateSpeed(float elapsedSeconds) {
     int degreeToSlowDown = -1;
     int halfPoint = (startPos + finalPos) / 2;
 
-    if (pos < halfPoint and currentSpeed != speed) {
+    if (currentPos < halfPoint and currentSpeed != speed) {
         currentSpeed = acceleration * elapsedSeconds;
         if (currentSpeed >= speed) {
             currentSpeed = speed;
-            degreeToSlowDown = finalPos - (pos - startPos);
+            degreeToSlowDown = finalPos - (currentPos - startPos);
         }
-    } else if ((degreeToSlowDown == -1 or (startPos <= finalPos and pos >= degreeToSlowDown) or (startPos > finalPos and pos <= degreeToSlowDown)) and currentSpeed > 0) {
+    } else if ((degreeToSlowDown == -1 or (startPos <= finalPos and currentPos >= degreeToSlowDown) or (startPos > finalPos and currentPos <= degreeToSlowDown)) and currentSpeed > 0) {
         currentSpeed -= acceleration * Time::deltaTime / 1000.f;
         if (currentSpeed <= 0) {
             currentSpeed = 0;
@@ -48,7 +82,7 @@ void MyServo::updateSpeed(float speed, float elapsedSeconds, int pos, float acce
     }
 }
 
-bool MyServo::initLoop(float speed, float acceleration) {
+bool MyServo::initLoop() {
     if (not Device::initLoop()) return false;
 
     if (acceleration == -1) {
@@ -58,27 +92,20 @@ bool MyServo::initLoop(float speed, float acceleration) {
     return true;
 }
 
-void MyServo::loop(float speed, float acceleration) {
-    if (not initLoop(speed, acceleration)) return;
+void MyServo::loop() {
+    if (not initLoop()) return;
 
-    float elapsedSeconds = (Time::currentTime - startTime) / 1000.f;
-    int pos = getNewPos(elapsedSeconds);
+    float elapsedSeconds = (millis() - startTime) / 1000.f;
+    currentPos = getNewPos(elapsedSeconds);
 
-    servo->write(pos);
+    servo->write(currentPos);
 
-    if (pos == finalPos) {
+    if (currentPos == finalPos) {
         state = State::Done;
+        inInitPos = currentPos == initPos;
     } else if (acceleration != -1) {
-        updateSpeed(speed, elapsedSeconds, pos, acceleration);
+        updateSpeed(elapsedSeconds);
     }
-}
-
-void MyServo::loopSpeed(float speed, float acceleration) {
-    loop(speed, acceleration);
-}
-
-void MyServo::loopTime(float seconds, float acceleration) {
-    loop(distance / seconds, acceleration);
 }
 
 void MyServo::moveToPosition(int finalPos) {
@@ -96,10 +123,53 @@ void MyServo::moveToInitialPosition() {
     moveToPosition(initPos);
 }
 
+bool MyServo::isInInitPos() {
+    return inInitPos;
+}
+
+ServoTool::ServoTool(int pin, int initPos) : MyServo(pin, initPos) {
+    toolState = ToolState::Open;
+}
+
+void ServoTool::loop() {
+    MyServo::loop();
+
+    if (currentPos == 0) {
+        toolState = ToolState::Closed;
+    } else if (currentPos == 180) {
+        toolState = ToolState::FullOpen;
+    } else {
+        if (toolState != ToolState::Open) {
+            toolState = ToolState::Open;
+        }
+    }
+}
+
 void ServoTool::close() {
     moveToPosition(0);
 }
 
 void ServoTool::open() {
     moveToPosition(180);
+}
+
+void ServoTool::openClose() {
+    if (toolState == ToolState::Closed) {
+        open();
+    } else {
+        close();
+    }
+}
+
+bool ServoTool::isClosed() {
+    return toolState == ToolState::Closed;
+}
+
+bool ServoTool::isOpen() {
+    return toolState == ToolState::Open or
+           toolState == ToolState::FullOpen;
+}
+
+bool ServoTool::isFullOpen() {
+    return toolState == ToolState::FullOpen;
 }
