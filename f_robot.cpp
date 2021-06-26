@@ -27,21 +27,21 @@ void Robot::setSpeed(float speed) {
 }
 
 void Robot::setDuration(float duration) {
-    servoTool.setSpeed(duration);
-    servo1.setSpeed(duration);
-    servo2.setSpeed(duration);
-    servo3.setSpeed(duration);
-    servo4.setSpeed(duration);
-    servo5.setSpeed(duration);
+    servoTool.setDuration(duration);
+    servo1.setDuration(duration);
+    servo2.setDuration(duration);
+    servo3.setDuration(duration);
+    servo4.setDuration(duration);
+    servo5.setDuration(duration);
 }
 
 void Robot::setAcceleration(float acceleration) {
-    servoTool.setSpeed(acceleration);
-    servo1.setSpeed(acceleration);
-    servo2.setSpeed(acceleration);
-    servo3.setSpeed(acceleration);
-    servo4.setSpeed(acceleration);
-    servo5.setSpeed(acceleration);
+    servoTool.setAcceleration(acceleration);
+    servo1.setAcceleration(acceleration);
+    servo2.setAcceleration(acceleration);
+    servo3.setAcceleration(acceleration);
+    servo4.setAcceleration(acceleration);
+    servo5.setAcceleration(acceleration);
 }
 
 bool Robot::initLoop() {

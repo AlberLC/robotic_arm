@@ -13,13 +13,12 @@ MyServo::MyServo(int pin, int initPos) : Device() {
     servo->write(initPos);
     servo->attach(pin);
     this->initPos = initPos;
-    startPos = 0;
-    finalPos = 0;
-    currentPos = 0;
+    startPos = initPos;
+    currentPos = initPos;
+    finalPos = initPos;
     distance = 0;
     direction = 0;
     startTime = 0;
-    finalPos = 90;
     currentSpeed = 0;
     speed = 90;
     acceleration = 1;
@@ -138,10 +137,8 @@ void ServoTool::loop() {
         toolState = ToolState::Closed;
     } else if (currentPos == 180) {
         toolState = ToolState::FullOpen;
-    } else {
-        if (toolState != ToolState::Open) {
-            toolState = ToolState::Open;
-        }
+    } else if (not isOpen()) {
+        toolState = ToolState::Open;
     }
 }
 
@@ -154,7 +151,7 @@ void ServoTool::open() {
 }
 
 void ServoTool::openClose() {
-    if (toolState == ToolState::Closed) {
+    if (isClosed()) {
         open();
     } else {
         close();

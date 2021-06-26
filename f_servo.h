@@ -11,8 +11,8 @@ class MyServo : public Device {
     bool inInitPos;
     int initPos;
     int startPos;
-    int finalPos;
     int currentPos;
+    int finalPos;
     int distance;
     int direction;
     unsigned long startTime;
