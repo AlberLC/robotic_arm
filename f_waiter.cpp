@@ -1,22 +1,17 @@
-#pragma once
+#include "f_waiter.h"
 
-class Waiter {
-   private:
-    unsigned long waitingTime;
-    unsigned long lastTime;
+#include "f_time.h"
 
-   public:
-    Waiter() {
-        waitingTime = 0;
-        lastTime = 0;
-    }
+Waiter::Waiter() {
+    waitingTime = 0;
+    lastTime = 0;
+}
 
-    void wait(unsigned long waitingTime, unsigned long currentTime) {
-        this->waitingTime = waitingTime;
-        lastTime = currentTime;
-    }
+void Waiter::wait(unsigned long waitingTime) {
+    this->waitingTime = waitingTime;
+    lastTime = Time::currentTime;
+}
 
-    bool isExceeded(unsigned long currentTime) {
-        return currentTime - lastTime >= waitingTime;
-    }
-};
+bool Waiter::isExceeded() {
+    return Time::currentTime - lastTime >= waitingTime;
+}
