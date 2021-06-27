@@ -16,12 +16,19 @@ MyServo::MyServo(int pin, int initPos) : Device() {
     startPos = initPos;
     currentPos = initPos;
     finalPos = initPos;
+    midPos = (startPos + finalPos) / 2;
     distance = 0;
     direction = 0;
     startTime = 0;
     currentSpeed = 0;
     speed = 90;
-    acceleration = 1;
+    acceleration = 30;
+    midCrossed = false;
+    timeToMid = getTimeToMid();
+    float timeToMaxSpeed = getTimeToMaxSpeed();
+    if (timeToMaxSpeed < timeToMid) {
+        timeToMid = timeToMaxSpeed + (midPos - getDistanceToMaxSpeed()) / speed;
+    }
 }
 
 float MyServo::getSpeed() {
@@ -60,24 +67,31 @@ int MyServo::getNewPos(float elapsedSeconds) {
         maxPos = startPos;
     }
 
-    return constrain(round(startPos + elapsedSeconds * currentSpeed * direction), minPos, maxPos);
+    return constrain(round(currentPos + Time::deltaTime / 1000.f * currentSpeed * direction), minPos, maxPos);
+}
+
+float MyServo::getTimeToMid() {
+    return sqrt(abs(2 * acceleration * (midPos - startPos))) / acceleration;
+}
+
+float MyServo::getTimeToMaxSpeed() {
+    return speed / acceleration;
+}
+
+float MyServo::getDistanceToMaxSpeed() {
+    return (speed * *2) / (2 * acceleration);
 }
 
 void MyServo::updateSpeed(float elapsedSeconds) {
-    int degreeToSlowDown = -1;
-    int halfPoint = (startPos + finalPos) / 2;
-
-    if (currentPos < halfPoint and currentSpeed != speed) {
-        currentSpeed = acceleration * elapsedSeconds;
-        if (currentSpeed >= speed) {
-            currentSpeed = speed;
-            degreeToSlowDown = finalPos - (currentPos - startPos);
-        }
-    } else if ((degreeToSlowDown == -1 or (startPos <= finalPos and currentPos >= degreeToSlowDown) or (startPos > finalPos and currentPos <= degreeToSlowDown)) and currentSpeed > 0) {
-        currentSpeed -= acceleration * Time::deltaTime / 1000.f;
-        if (currentSpeed <= 0) {
-            currentSpeed = 0;
-        }
+    if (elapsedSeconds < timeToMid) {
+        currentSpeed += Time::deltaTime / 1000.f * acceleration
+    } else if (not midCrossed) {
+        midCrossed = true;
+        t2 = elapsedSeconds - timeToMid;
+        t1 = Time::deltaTime / 1000.f - t2;
+        currentSpeed += t1 * acceleration - t2 * acceleration;
+    } else {
+        currentSpeed -= Time::deltaTime / 1000.f * acceleration;
     }
 }
 
@@ -94,7 +108,11 @@ bool MyServo::initLoop() {
 void MyServo::loop() {
     if (not initLoop()) return;
 
-    float elapsedSeconds = (millis() - startTime) / 1000.f;
+    float elapsedSeconds = (Time::currentTime - startTime) / 1000.f;
+    if (acceleration != -1) {
+        updateSpeed(elapsedSeconds);
+        currentSpeed = constrain(currentSpeed, 0, speed);
+    }
     currentPos = getNewPos(elapsedSeconds);
 
     servo->write(currentPos);
@@ -102,8 +120,6 @@ void MyServo::loop() {
     if (currentPos == finalPos) {
         state = State::Done;
         inInitPos = currentPos == initPos;
-    } else if (acceleration != -1) {
-        updateSpeed(elapsedSeconds);
     }
 }
 

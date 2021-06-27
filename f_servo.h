@@ -13,14 +13,20 @@ class MyServo : public Device {
     int startPos;
     int currentPos;
     int finalPos;
+    int midPos;
     int distance;
     int direction;
     unsigned long startTime;
     float currentSpeed;
     float speed;
     float acceleration;
+    bool midCrossed;
+    float timeToMid;
 
     int getNewPos(float elapsedSeconds);
+    float getTimeToMid();
+    float getTimeToMaxSpeed();
+    float getDistanceToMaxSpeed();
     void updateSpeed(float elapsedSeconds);
     bool initLoop();
 
