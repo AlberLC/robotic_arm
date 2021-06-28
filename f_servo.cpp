@@ -79,16 +79,16 @@ float MyServo::getTimeToMaxSpeed() {
 }
 
 float MyServo::getDistanceToMaxSpeed() {
-    return (speed * *2) / (2 * acceleration);
+    return (speed * speed) / (2 * acceleration);
 }
 
 void MyServo::updateSpeed(float elapsedSeconds) {
     if (elapsedSeconds < timeToMid) {
-        currentSpeed += Time::deltaTime / 1000.f * acceleration
+        currentSpeed += Time::deltaTime / 1000.f * acceleration;
     } else if (not midCrossed) {
         midCrossed = true;
-        t2 = elapsedSeconds - timeToMid;
-        t1 = Time::deltaTime / 1000.f - t2;
+        float t2 = elapsedSeconds - timeToMid;
+        float t1 = Time::deltaTime / 1000.f - t2;
         currentSpeed += t1 * acceleration - t2 * acceleration;
     } else {
         currentSpeed -= Time::deltaTime / 1000.f * acceleration;
