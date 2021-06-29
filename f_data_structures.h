@@ -7,6 +7,7 @@ class CircularArray {
     int index;
     T* values;
 
+    CircularArray() = default;
     CircularArray(int size);
     T& operator[](int i);
     void append(T value);
@@ -17,6 +18,7 @@ class AverageCircularArray : public CircularArray<T> {
    public:
     int averageN;
 
+    AverageCircularArray() = default;
     AverageCircularArray(int size, T initValue, int averageN = 10);
     float getAverage();
 };

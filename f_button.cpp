@@ -1,8 +1,5 @@
 #include "f_button.h"
 
-MyButton::MyButton() {
-}
-
 MyButton::MyButton(int pin) {
     this->pin = pin;
     pinMode(pin, INPUT);

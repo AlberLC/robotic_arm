@@ -31,7 +31,7 @@ class MyServo : public Device {
     bool initLoop();
 
    public:
-    MyServo();
+    MyServo() = default;
     MyServo(int pin, int initPos);
 
     float getSpeed();

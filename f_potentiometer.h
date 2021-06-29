@@ -9,6 +9,7 @@ class Potentiometer {
     AverageCircularArray<int> values;
 
    public:
+    Potentiometer() = default;
     Potentiometer(int pin);
     int rawRead();
     int read();

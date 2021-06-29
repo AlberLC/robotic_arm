@@ -13,7 +13,7 @@ class MyButton {
     bool lastState;
 
    public:
-    MyButton();
+    MyButton() = default;
     MyButton(int pin);
 
     bool read();

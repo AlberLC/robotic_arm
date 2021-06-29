@@ -2,9 +2,6 @@
 
 #include "f_time.h"
 
-MyServo::MyServo() : Device() {
-}
-
 MyServo::MyServo(int pin, int initPos) : Device() {
     state = State::Done;
 

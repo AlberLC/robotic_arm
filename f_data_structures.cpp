@@ -33,7 +33,7 @@ AverageCircularArray<T>::AverageCircularArray(int size, T initValue, int average
 template <class T>
 float AverageCircularArray<T>::getAverage() {
     float sum;
-    for (int i = this->index; i >= this->index - (averageN - 1); i--) {
+    for (int i = this->index; i >= this->index - (averageN - 1); --i) {
         sum += this->values[i];
     }
     return sum / averageN;

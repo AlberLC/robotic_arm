@@ -2,7 +2,7 @@
 
 Potentiometer::Potentiometer(int pin) {
     this->pin = pin;
-    values = AverageCircularArray<int>();
+    values = AverageCircularArray<int>(10, 0);
 }
 
 int Potentiometer::rawRead() {
