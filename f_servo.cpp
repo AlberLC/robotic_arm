@@ -1,5 +1,6 @@
 #include "f_servo.h"
 
+#include "f_config.h"
 #include "f_time.h"
 
 MyServo::MyServo(int pin, int initPos) : Device() {
@@ -106,7 +107,7 @@ void MyServo::loop() {
     if (not initLoop()) return;
 
     float elapsedSeconds = (Time::currentTime - startTime) / 1000.f;
-    if (acceleration != -1) {
+    if (acceleration != UNDEFINED) {
         updateSpeed(elapsedSeconds);
         currentSpeed = constrain(currentSpeed, 0, speed);
     }
@@ -148,7 +149,7 @@ void ServoTool::loop() {
 
     if (currentPos == 0) {
         toolState = ToolState::Closed;
-    } else if (currentPos == 180) {
+    } else if (currentPos == SERVO_MAX_POS) {
         toolState = ToolState::FullOpen;
     } else if (not isOpen()) {
         toolState = ToolState::Open;
@@ -160,7 +161,7 @@ void ServoTool::close() {
 }
 
 void ServoTool::open() {
-    moveToPosition(180);
+    moveToPosition(SERVO_MAX_POS);
 }
 
 void ServoTool::openClose() {

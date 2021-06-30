@@ -1,12 +1,14 @@
 #include "f_robot.h"
 
+#include "f_config.h"
+
 Robot::Robot() {
-    servoTool = ServoTool(8, 90);
-    servo1 = MyServo(13, 180);
-    servo2 = MyServo(12, 10);
-    servo3 = MyServo(11, 180);
-    servo4 = MyServo(10, 35);
-    servo5 = MyServo(9, 90);
+    servoTool = ServoTool(SERVO_TOOL_PIN, SERVO_TOOL_INIT_POS);
+    servo1 = MyServo(SERVO_1_PIN, SERVO_1_INIT_POS);
+    servo2 = MyServo(SERVO_2_PIN, SERVO_2_INIT_POS);
+    servo3 = MyServo(SERVO_3_PIN, SERVO_3_INIT_POS);
+    servo4 = MyServo(SERVO_4_PIN, SERVO_4_INIT_POS);
+    servo5 = MyServo(SERVO_5_PIN, SERVO_5_INIT_POS);
 
     state = State::Paused;
 

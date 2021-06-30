@@ -1,8 +1,10 @@
 #include "f_potentiometer.h"
 
+#include "f_config.h"
+
 Potentiometer::Potentiometer(int pin) {
     this->pin = pin;
-    values = AverageCircularArray<int>(10, 0);
+    values = AverageCircularArray<int>(AVERAGE_ARRAY_SIZE, 0);
 }
 
 int Potentiometer::rawRead() {
@@ -11,5 +13,5 @@ int Potentiometer::rawRead() {
 
 int Potentiometer::read() {
     values.append(rawRead());
-    return values.getAverage();
+    return round(values.getEMA());
 }

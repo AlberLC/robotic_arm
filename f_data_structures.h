@@ -1,5 +1,7 @@
 #pragma once
 
+#include "f_config.h"
+
 template <class T>
 class CircularArray {
    public:
@@ -16,9 +18,11 @@ class CircularArray {
 template <class T>
 class AverageCircularArray : public CircularArray<T> {
    public:
-    int averageN;
+    int periods;
 
     AverageCircularArray() = default;
-    AverageCircularArray(int size, T initValue, int averageN = 10);
-    float getAverage();
+    AverageCircularArray(int size, T initValue, int periods = EMA_PERIODS);
+    float getMultiplier();
+    float getAverage(int i = 0);
+    float getEMA(int i = 0);
 };

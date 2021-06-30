@@ -1,3 +1,4 @@
+#include "f_config.h"
 #include "f_robot.h"
 #include "f_time.h"
 
@@ -9,13 +10,13 @@ MyButton StopButton;
 void setup() {
     Serial.begin(9600);
 
-    playPauseButton = MyButton(7);
-    ToolButton = MyButton(6);
-    StopButton = MyButton(5);
+    playPauseButton = MyButton(PLAY_PAUSE_BUTTON_PIN);
+    ToolButton = MyButton(TOOL_BUTTON_PIN);
+    StopButton = MyButton(STOP_BUTTON_PIN);
 
     robot = new Robot();
-    robot->setSpeed(90);
-    robot->setAcceleration(-1);
+    robot->setSpeed(ROBOT_SPEED);
+    robot->setAcceleration(ROBOT_ACCELERATION);
     // robot->servoTool.setSpeed(90);
     // robot->servo1.setSpeed(90);
     // robot->servo2.setSpeed(90);

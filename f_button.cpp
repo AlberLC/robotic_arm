@@ -1,11 +1,13 @@
 #include "f_button.h"
 
+#include "f_config.h"
+
 MyButton::MyButton(int pin) {
     this->pin = pin;
     pinMode(pin, INPUT);
     state = false;
     lastReading = false;
-    debounceDelay = 50;
+    debounceDelay = DEBONCE_DELAY;
     lastState = false;
 }
 
