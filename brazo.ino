@@ -4,15 +4,15 @@
 
 Robot *robot;
 MyButton playPauseButton;
-MyButton ToolButton;
-MyButton StopButton;
+MyButton toolButton;
+MyButton stopButton;
 
 void setup() {
     Serial.begin(9600);
 
     playPauseButton = MyButton(PLAY_PAUSE_BUTTON_PIN);
-    ToolButton = MyButton(TOOL_BUTTON_PIN);
-    StopButton = MyButton(STOP_BUTTON_PIN);
+    toolButton = MyButton(TOOL_BUTTON_PIN);
+    stopButton = MyButton(STOP_BUTTON_PIN);
 
     robot = new Robot();
     robot->setSpeed(ROBOT_SPEED);
@@ -38,10 +38,10 @@ void loop() {
     if (playPauseButton.pressed()) {
         robot->playPause();
     }
-    if (ToolButton.pressed()) {
+    if (toolButton.pressed()) {
         robot->servoTool.openClose();
     }
-    if (StopButton.pressed()) {
+    if (stopButton.pressed()) {
         robot->stop();
     }
 
