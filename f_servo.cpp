@@ -105,8 +105,8 @@ void MyServo::loop() {
         updateSpeed(elapsedSeconds);
         currentSpeed = constrain(currentSpeed, 0, speed);
     }
-    currentPos = getNewPos(elapsedSeconds);
 
+    currentPos = getNewPos(elapsedSeconds);
     servo->write(currentPos);
 
     if (currentPos == finalPos) {

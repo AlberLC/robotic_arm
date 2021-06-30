@@ -12,7 +12,7 @@ Robot::Robot() {
 
     state = State::Paused;
 
-    initPosGoing = true;
+    goingToInitPos = false;
     s12Going = false;
     s3Going = false;
     s4Going = false;
@@ -48,12 +48,11 @@ void Robot::setAcceleration(float acceleration) {
 
 bool Robot::initLoop() {
     if (isPaused() or not waiter.isExceeded()) return false;
-    if (initPosGoing) {
+    if (goingToInitPos) {
         if (isInInitPos()) {
-            initPosGoing = false;
+            goingToInitPos = false;
             pause();
         }
-
         return false;
     }
 
@@ -159,7 +158,7 @@ void Robot::playPause() {
 }
 
 void Robot::stop() {
-    initPosGoing = true;
+    goingToInitPos = true;
 
     servoTool.moveToInitialPosition();
     servo1.moveToInitialPosition();

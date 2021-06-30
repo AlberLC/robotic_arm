@@ -24,7 +24,7 @@ class Robot {
     bool s3Going;
     bool s4Going;
     bool s5Going;
-    bool initPosGoing;
+    bool goingToInitPos;
 
     Robot();
 
