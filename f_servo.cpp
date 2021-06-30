@@ -93,21 +93,15 @@ void MyServo::updateSpeed(float elapsedSeconds) {
     }
 }
 
-bool MyServo::initLoop() {
-    if (not Device::initLoop()) return false;
-
-    if (acceleration == -1) {
-        currentSpeed = speed;
-    }
-
-    return true;
-}
-
 void MyServo::loop() {
     if (not initLoop()) return;
 
     float elapsedSeconds = (Time::currentTime - startTime) / 1000.f;
-    if (acceleration != UNDEFINED) {
+    if (acceleration == UNDEFINED) {
+        if (currentSpeed != speed) {
+            currentSpeed = speed;
+        }
+    } else {
         updateSpeed(elapsedSeconds);
         currentSpeed = constrain(currentSpeed, 0, speed);
     }

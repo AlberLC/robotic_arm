@@ -28,7 +28,6 @@ class MyServo : public Device {
     float getTimeToMaxSpeed();
     float getDistanceToMaxSpeed();
     void updateSpeed(float elapsedSeconds);
-    bool initLoop();
 
    public:
     MyServo() = default;
