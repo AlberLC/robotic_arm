@@ -2,6 +2,7 @@
 
 #include "Servo.h"
 #include "arduino.h"
+#include "f_config.h"
 #include "f_device.h"
 #include "f_math.h"
 

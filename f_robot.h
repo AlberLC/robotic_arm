@@ -1,6 +1,7 @@
 #pragma once
 
 #include "f_button.h"
+#include "f_config.h"
 #include "f_servo.h"
 #include "f_waiter.h"
 

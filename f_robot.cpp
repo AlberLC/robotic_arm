@@ -1,7 +1,5 @@
 #include "f_robot.h"
 
-#include "f_config.h"
-
 Robot::Robot() {
     servoTool = ServoTool(SERVO_TOOL_PIN, SERVO_TOOL_INIT_POS);
     servo1 = MyServo(SERVO_1_PIN, SERVO_1_INIT_POS);
