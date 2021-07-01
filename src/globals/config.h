@@ -20,11 +20,12 @@ const int SERVO_5_INIT_POS = 90;
 
 const int SERVO_MAX_POS = 180;
 
-const int STEPPER_PIN = 0;  //todo
+const int STEPPER_STEPS = 200;
+const int STEPPER_CHANNEL = 2;
 const int STEPPER_MIN_POS = 0;
 const int STEPPER_MAX_POS = 300;
 
-const int POTENTIOMETER_PIN = 0;  //todo
+const int POTENTIOMETER_PIN = 0;  //Pin Analogico A0
 const int POTENTIOMETER_MIN_READ = 0;
 const int POTENTIOMETER_MAX_READ = 680;
 
