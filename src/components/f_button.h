@@ -1,8 +1,8 @@
 #pragma once
 
+#include "../globals/f_config.h"
+#include "../utils/f_waiter.h"
 #include "arduino.h"
-#include "f_config.h"
-#include "f_waiter.h"
 
 class MyButton {
    private:

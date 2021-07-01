@@ -1,13 +1,13 @@
 #pragma once
 
+#include "../../../globals/f_config.h"
+#include "../../../globals/f_time.h"
+#include "../../../utils/f_math.h"
+#include "../f_stateful_device.h"
 #include "Servo.h"
 #include "arduino.h"
-#include "f_config.h"
-#include "f_device.h"
-#include "f_math.h"
-#include "f_time.h"
 
-class MyServo : public Device {
+class MyServo : public StatefulDevice {
    protected:
     Servo *servo;
     bool inInitPos;

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "f_button.h"
-#include "f_config.h"
-#include "f_servo.h"
-#include "f_waiter.h"
+#include "../components/f_button.h"
+#include "../components/stateful_devices/motors/f_servo.h"
+#include "../globals/f_config.h"
+#include "../utils/f_waiter.h"
 
 class Robot {
    public:

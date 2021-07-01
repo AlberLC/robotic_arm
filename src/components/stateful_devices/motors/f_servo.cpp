@@ -1,6 +1,6 @@
 #include "f_servo.h"
 
-MyServo::MyServo(int pin, int initPos) : Device() {
+MyServo::MyServo(int pin, int initPos) : StatefulDevice() {
     state = State::Done;
 
     inInitPos = true;

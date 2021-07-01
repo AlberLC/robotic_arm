@@ -1,6 +1,6 @@
 #pragma once
 
-#include "f_time.h"
+#include "../globals/f_time.h"
 
 class Waiter {
    private:
