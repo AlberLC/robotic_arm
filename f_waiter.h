@@ -1,5 +1,7 @@
 #pragma once
 
+#include "f_time.h"
+
 class Waiter {
    private:
     unsigned long waitingTime;

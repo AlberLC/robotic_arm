@@ -5,6 +5,7 @@
 #include "f_config.h"
 #include "f_device.h"
 #include "f_math.h"
+#include "f_time.h"
 
 class MyServo : public Device {
    protected:

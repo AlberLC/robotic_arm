@@ -1,7 +1,5 @@
 #include "f_waiter.h"
 
-#include "f_time.h"
-
 Waiter::Waiter() {
     waitingTime = 0;
     lastTime = 0;

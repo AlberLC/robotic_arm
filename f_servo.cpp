@@ -1,7 +1,5 @@
 #include "f_servo.h"
 
-#include "f_time.h"
-
 MyServo::MyServo(int pin, int initPos) : Device() {
     state = State::Done;
 
