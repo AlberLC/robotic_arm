@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../utils/f_waiter.h"
+#include "../../utils/waiter.h"
 
 class StatefulDevice {
    protected:

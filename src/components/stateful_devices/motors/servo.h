@@ -1,11 +1,12 @@
 #pragma once
 
-#include "../../../globals/f_config.h"
-#include "../../../globals/f_time.h"
-#include "../../../utils/f_math.h"
-#include "../f_stateful_device.h"
-#include "Servo.h"
-#include "arduino.h"
+#include <Servo.h>
+#include <arduino.h>
+
+#include "../../../globals/config.h"
+#include "../../../globals/time.h"
+#include "../../../utils/math.h"
+#include "../stateful_device.h"
 
 class MyServo : public StatefulDevice {
    protected:

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../../globals/f_config.h"
-#include "../../f_potentiometer.h"
+#include "../../../globals/config.h"
+#include "../../potentiometer.h"
 #include "Adafruit_MotorShield.h"
 
 class Stepper {

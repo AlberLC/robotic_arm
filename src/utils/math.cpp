@@ -1,4 +1,4 @@
-#include "f_math.h"
+#include "math.h"
 
 float lerp(float a, float b, float t) {
     return a + (b - a) * constrain(t, 0, 1);

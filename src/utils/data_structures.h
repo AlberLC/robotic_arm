@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../globals/f_config.h"
+#include "../globals/config.h"
 
 template <class T>
 class CircularArray {

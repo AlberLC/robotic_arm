@@ -1,6 +1,6 @@
-#include "src/globals/f_config.h"
-#include "src/globals/f_time.h"
-#include "src/robots/f_robot.h"
+#include "src/globals/config.h"
+#include "src/globals/time.h"
+#include "src/robots/robot.h"
 
 Robot *robot;
 MyButton playPauseButton;

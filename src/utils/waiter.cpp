@@ -1,4 +1,4 @@
-#include "f_waiter.h"
+#include "waiter.h"
 
 Waiter::Waiter() {
     waitingTime = 0;

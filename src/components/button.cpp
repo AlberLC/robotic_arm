@@ -1,4 +1,4 @@
-#include "f_button.h"
+#include "button.h"
 
 MyButton::MyButton(int pin) {
     this->pin = pin;

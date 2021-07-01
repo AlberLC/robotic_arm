@@ -1,4 +1,4 @@
-#include "f_servo.h"
+#include "servo.h"
 
 MyServo::MyServo(int pin, int initPos) : StatefulDevice() {
     state = State::Done;

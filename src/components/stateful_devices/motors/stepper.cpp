@@ -1,4 +1,4 @@
-#include "f_stepper.h"
+#include "stepper.h"
 
 Stepper::Stepper(int pin, int minPos, int maxPos) {
     this->pin = pin;

@@ -1,4 +1,4 @@
-#include "f_potentiometer.h"
+#include "potentiometer.h"
 
 Potentiometer::Potentiometer(int pin, int minRead, int maxRead) {
     this->pin = pin;
