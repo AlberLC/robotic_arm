@@ -1,11 +1,13 @@
 #include "src/globals/config.h"
 #include "src/globals/time.h"
 #include "src/robots/robot.h"
+#include "src/components/potentiometer.h"
 
 Robot *robot;
 MyButton playPauseButton;
 MyButton toolButton;
 MyButton stopButton;
+Potentiometer potentiometer;
 
 void setup() {
     Serial.begin(9600);
@@ -17,19 +19,8 @@ void setup() {
     robot = new Robot();
     robot->setSpeed(ROBOT_SPEED);
     robot->setAcceleration(ROBOT_ACCELERATION);
-    // robot->servoTool.setSpeed(90);
-    // robot->servo1.setSpeed(90);
-    // robot->servo2.setSpeed(90);
-    // robot->servo3.setSpeed(90);
-    // robot->servo4.setSpeed(90);
-    // robot->servo5.setSpeed(90);
-
-    // robot->servoTool.setAcceleration(-1);
-    // robot->servo1.setAcceleration(-1);
-    // robot->servo2.setAcceleration(-1);
-    // robot->servo3.setAcceleration(-1);
-    // robot->servo4.setAcceleration(-1);
-    // robot->servo5.setAcceleration(-1);
+    
+    potentiometer = Potentiometer(POTENTIOMETER_PIN, POTENTIOMETER_MIN_READ, POTENTIOMETER_MAX_READ);
 }
 
 void loop() {
@@ -45,7 +36,7 @@ void loop() {
         robot->stop();
     }
 
-    Serial.println((int)robot->state);
+    Serial.println(potentiometer.read());
 
-    robot->testMoveLoop();
+    //robot->testMoveLoop();
 }
