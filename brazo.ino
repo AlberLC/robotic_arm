@@ -3,7 +3,7 @@
 #include "src/globals/time.h"
 #include "src/robots/robot.h"
 
-Robot *robot;
+Robot* robot;
 MyButton playPauseButton;
 MyButton toolButton;
 MyButton stopButton;
@@ -36,7 +36,7 @@ void loop() {
         robot->stop();
     }
 
-    Serial.println(potentiometer.read());
+    // Serial.println(potentiometer.read());
 
     //robot->testMoveLoop();
 }

@@ -2,7 +2,6 @@
 
 #include <arduino.h>
 
-#include "../globals/config.h"
 #include "../utils/data_structures.h"
 #include "component.h"
 
