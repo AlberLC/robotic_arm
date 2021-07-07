@@ -8,7 +8,7 @@ class MyServo : public Motor {
    protected:
     Servo *servo;
 
-    int calculateDistance(int startPos, int finalPos) override;
+    int calculateAngularDistance(int startPos, int finalPos) override;
 
    public:
     using Motor::Motor;

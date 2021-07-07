@@ -8,7 +8,7 @@ int Stepper::getCurrentPos() {
     return map(potentiometer.read(), potentiometer.getMinLimit(), potentiometer.getMaxLimit(), getMinPos(), getMaxPos());
 }
 
-int Stepper::calculateDistance(int startPos, int finalPos) {
+int Stepper::calculateAngularDistance(int startPos, int finalPos) {
     int angularDistanceUp;
     if (startPos < finalPos < getMaxPos() or getMaxPos() < currentPos < finalPos) {
         angularDistanceUp = finalPos - startPos;

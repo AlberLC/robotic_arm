@@ -25,11 +25,11 @@ class Motor : public Stateful, public Component {
     bool midCrossed;
     float timeToMid;
 
-    virtual int calculateDistance(int startPos, int finalPos);
+    virtual int calculateAngularDistance(int startPos, int finalPos);
     float calculateNewPos();
     float calculateTimeToMidUnlimited();
     float calculateTimeToMaxSpeed();
-    float calculateDistanceToMaxSpeed();
+    float calculateAngularDistanceToMaxSpeed();
     void updateTimeToMid();
     void updateSpeed();
     virtual void writeMotor(int pos);

@@ -81,7 +81,7 @@ void Motor::setAcceleration(float acceleration) {
     }
 }
 
-int Motor::calculateDistance() {
+int Motor::calculateAngularDistance(int startPos, int finalPos) {
 }
 
 float Motor::calculateNewPos() {
@@ -107,7 +107,7 @@ float Motor::calculateTimeToMaxSpeed() {
     return speed / acceleration;
 }
 
-float Motor::calculateDistanceToMaxSpeed() {
+float Motor::calculateAngularDistanceToMaxSpeed() {
     return speed * speed / (2 * acceleration);
 }
 
@@ -115,7 +115,7 @@ void Motor::updateTimeToMid() {
     timeToMid = calculateTimeToMidUnlimited();
     float timeToMaxSpeed = calculateTimeToMaxSpeed();
     if (timeToMaxSpeed < timeToMid) {
-        timeToMid = timeToMaxSpeed + (abs(midPos - startPos) - calculateDistanceToMaxSpeed()) / speed;
+        timeToMid = timeToMaxSpeed + (abs(midPos - startPos) - calculateAngularDistanceToMaxSpeed()) / speed;
     }
 }
 
@@ -161,7 +161,7 @@ void Motor::loop() {
 
 void Motor::moveToPosition(int finalPos) {
     startPos = roundedCurrentPos;
-    int d = calculateDistance(startPos, finalPos);
+    int d = calculateAngularDistance(startPos, finalPos);
     angularDistance = abs(d);
     direction = sign(d);
     elapsedSeconds = 0;

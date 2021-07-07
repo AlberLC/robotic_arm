@@ -20,7 +20,7 @@ void setup() {
     robot->setSpeed(ROBOT_SPEED);
     robot->setAcceleration(ROBOT_ACCELERATION);
 
-    potentiometer = Potentiometer(POTENTIOMETER_PIN, POTENTIOMETER_MIN_LIMIT, POTENTIOMETER_MAX_LIMIT);
+    // potentiometer = Potentiometer(POTENTIOMETER_PIN, POTENTIOMETER_MIN_LIMIT, POTENTIOMETER_MAX_LIMIT);
 }
 
 void loop() {
