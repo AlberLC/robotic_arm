@@ -8,11 +8,13 @@ class MyServo : public Motor {
    protected:
     Servo *servo;
 
+    int calculateDistance(int startPos, int finalPos) override;
+
    public:
     using Motor::Motor;
     MyServo(int pin, int initPos, int minPos = -1, int maxPos = -1);
 
-    void writeMotor() override;
+    void writeMotor(int pos) override;
 };
 
 class ServoTool : public MyServo {

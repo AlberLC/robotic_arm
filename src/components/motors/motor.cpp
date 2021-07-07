@@ -12,7 +12,7 @@ Motor::Motor(int pin, int initPos, int minPos, int maxPos) : Component(pin), Sta
     roundedCurrentPos = initPos;
     finalPos = initPos;
     midPos = (startPos + finalPos) / 2;
-    distance = 0;
+    angularDistance = 0;
     direction = 0;
     elapsedSeconds = 0;
     currentSpeed = 0;
@@ -62,11 +62,11 @@ void Motor::setSpeed(float speed) {
 }
 
 float Motor::getDuration() {
-    return distance / speed;
+    return angularDistance / speed;
 }
 
 void Motor::setDuration(float duration) {
-    float speed = distance / duration;
+    float speed = angularDistance / duration;
     setSpeed(speed);
 }
 
@@ -79,6 +79,9 @@ void Motor::setAcceleration(float acceleration) {
         this->acceleration = acceleration;
         updateTimeToMid();
     }
+}
+
+int Motor::calculateDistance() {
 }
 
 float Motor::calculateNewPos() {
@@ -129,7 +132,7 @@ void Motor::updateSpeed() {
     }
 }
 
-void Motor::writeMotor() {
+void Motor::writeMotor(int pos) {
 }
 
 void Motor::loop() {
@@ -148,7 +151,7 @@ void Motor::loop() {
 
     currentPos = calculateNewPos();
     roundedCurrentPos = round(currentPos);
-    writeMotor();
+    writeMotor(roundedCurrentPos);
 
     if (roundedCurrentPos == finalPos) {
         state = State::Done;
@@ -158,9 +161,8 @@ void Motor::loop() {
 
 void Motor::moveToPosition(int finalPos) {
     startPos = roundedCurrentPos;
-    this->finalPos = finalPos;
-    int d = finalPos - startPos;
-    distance = abs(d);
+    int d = calculateDistance(startPos, finalPos);
+    angularDistance = abs(d);
     direction = sign(d);
     elapsedSeconds = 0;
     state = State::Working;

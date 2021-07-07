@@ -16,7 +16,7 @@ class Motor : public Stateful, public Component {
     int roundedCurrentPos;
     int finalPos;
     int midPos;
-    int distance;
+    int angularDistance;
     int direction;
     unsigned long elapsedSeconds;
     float currentSpeed;
@@ -25,13 +25,14 @@ class Motor : public Stateful, public Component {
     bool midCrossed;
     float timeToMid;
 
+    virtual int calculateDistance(int startPos, int finalPos);
     float calculateNewPos();
     float calculateTimeToMidUnlimited();
     float calculateTimeToMaxSpeed();
     float calculateDistanceToMaxSpeed();
     void updateTimeToMid();
     void updateSpeed();
-    void virtual writeMotor();
+    virtual void writeMotor(int pos);
 
    public:
     using Component::Component;

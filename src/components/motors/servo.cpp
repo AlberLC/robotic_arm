@@ -6,8 +6,12 @@ MyServo::MyServo(int pin, int initPos, int minPos, int maxPos) : Motor(pin, init
     servo->attach(pin);
 }
 
-void MyServo::writeMotor() {
-    servo->write(roundedCurrentPos);
+int MyServo::calculateDistance(int startPos, int finalPos) {
+    return finalPos - startPos;
+}
+
+void MyServo::writeMotor(int pos) {
+    servo->write(pos);
 }
 
 ServoTool::ServoTool(int pin, int initPos, int minPos, int maxPos) : MyServo(pin, initPos, minPos, maxPos) {

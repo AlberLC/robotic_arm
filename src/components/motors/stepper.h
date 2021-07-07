@@ -9,6 +9,8 @@ class Stepper : public Motor {
    protected:
     Potentiometer potentiometer;
 
+    int calculateDistance(int startPos, int finalPos) override;
+
    public:
     using Motor::Motor;
     Stepper(int pin, int initPos, int minPos = -1, int maxPos = -1);
