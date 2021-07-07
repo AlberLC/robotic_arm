@@ -1,7 +1,7 @@
+#include "src/components/potentiometer.h"
 #include "src/globals/config.h"
 #include "src/globals/time.h"
 #include "src/robots/robot.h"
-#include "src/components/potentiometer.h"
 
 Robot *robot;
 MyButton playPauseButton;
@@ -19,8 +19,8 @@ void setup() {
     robot = new Robot();
     robot->setSpeed(ROBOT_SPEED);
     robot->setAcceleration(ROBOT_ACCELERATION);
-    
-    potentiometer = Potentiometer(POTENTIOMETER_PIN, POTENTIOMETER_MIN_READ, POTENTIOMETER_MAX_READ);
+
+    potentiometer = Potentiometer(POTENTIOMETER_PIN, POTENTIOMETER_MIN_LIMIT, POTENTIOMETER_MAX_LIMIT);
 }
 
 void loop() {

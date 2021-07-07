@@ -23,7 +23,7 @@ class AverageCircularArray : public CircularArray<T> {
    public:
     int periods;
 
-    AverageCircularArray() = default;
+    using CircularArray<T>::CircularArray;
     AverageCircularArray(int size, T initValue, int periods = EMA_PERIODS);
     float getMultiplier();
     float getAverage(int i = 0);

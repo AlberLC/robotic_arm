@@ -1,7 +1,6 @@
 #include "button.h"
 
-MyButton::MyButton(int pin) {
-    this->pin = pin;
+MyButton::MyButton(int pin) : Component(pin) {
     pinMode(pin, INPUT);
     state = false;
     lastReading = false;

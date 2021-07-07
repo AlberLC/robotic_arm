@@ -4,16 +4,16 @@
 
 #include "../globals/config.h"
 #include "../utils/data_structures.h"
+#include "component.h"
 
-class Potentiometer {
+class Potentiometer : Component {
    protected:
-    int pin;
     int minLimit;
     int maxLimit;
     AverageCircularArray<int> values;
 
    public:
-    Potentiometer() = default;
+    using Component::Component;
     Potentiometer(int pin, int minLimit, int maxLimit);
 
     int getMinLimit();

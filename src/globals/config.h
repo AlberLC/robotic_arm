@@ -27,8 +27,8 @@ const int STEPPER_MIN_POS = 0;
 const int STEPPER_MAX_POS = 300;
 
 const int POTENTIOMETER_PIN = 0;  //Pin Analogico A0
-const int POTENTIOMETER_MIN_READ = 0;
-const int POTENTIOMETER_MAX_READ = 680;
+const int POTENTIOMETER_MIN_LIMIT = 0;
+const int POTENTIOMETER_MAX_LIMIT = 680;
 
 const int ROBOT_SPEED = 90;
 const int ROBOT_ACCELERATION = -1;

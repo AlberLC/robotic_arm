@@ -4,10 +4,10 @@
 
 #include "../globals/config.h"
 #include "../utils/waiter.h"
+#include "component.h"
 
-class MyButton {
+class MyButton : Component {
    private:
-    int pin;
     bool state;
     bool lastReading;
     unsigned debounceDelay;
@@ -15,7 +15,7 @@ class MyButton {
     bool lastState;
 
    public:
-    MyButton() = default;
+    using Component::Component;
     MyButton(int pin);
 
     bool read();
