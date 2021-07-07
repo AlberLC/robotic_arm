@@ -14,7 +14,7 @@ class Potentiometer {
 
    public:
     Potentiometer() = default;
-    Potentiometer(int pin, int minRead, int maxRead);
+    Potentiometer(int pin, int minLimit, int maxLimit);
 
     int getMinLimit();
     int getMaxLimit();

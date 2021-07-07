@@ -1,9 +1,9 @@
 #include "potentiometer.h"
 
-Potentiometer::Potentiometer(int pin, int minRead, int maxRead) {
+Potentiometer::Potentiometer(int pin, int minLimit, int maxLimit) {
     this->pin = pin;
-    this->minLimit = minRead;
-    this->maxLimit = maxRead;
+    this->minLimit = minLimit;
+    this->maxLimit = maxLimit;
     values = AverageCircularArray<int>(AVERAGE_ARRAY_SIZE, 0);
 }
 

@@ -1,6 +1,9 @@
 #pragma once
 
+#include <arduino.h>
+
 #include "../globals/config.h"
+#include "math.h"
 
 template <class T>
 class CircularArray {

@@ -1,10 +1,10 @@
-#include "stateful_device.h"
+#include "stateful.h"
 
-StatefulDevice::StatefulDevice() {
+Stateful::Stateful() {
     state = State::Done;
 }
 
-bool StatefulDevice::initLoop() {
+bool Stateful::initLoop() {
     if (isDone() or isPaused() or not waiter.isExceeded()) return false;
 
     if (state != State::Working) {
@@ -14,31 +14,31 @@ bool StatefulDevice::initLoop() {
     return true;
 }
 
-void StatefulDevice::wait(unsigned long waitingTime) {
+void Stateful::wait(unsigned long waitingTime) {
     state = State::Waiting;
     waiter.wait(waitingTime);
 }
 
-bool StatefulDevice::isDone() {
+bool Stateful::isDone() {
     return state == State::Done;
 }
 
-bool StatefulDevice::isWaiting() {
+bool Stateful::isWaiting() {
     return state == State::Waiting;
 }
 
-bool StatefulDevice::isPaused() {
+bool Stateful::isPaused() {
     return state == State::Paused;
 }
 
-bool StatefulDevice::isWorking() {
+bool Stateful::isWorking() {
     return state == State::Working;
 }
 
-void StatefulDevice::play() {
+void Stateful::play() {
     state = State::Waiting;
 }
 
-void StatefulDevice::pause() {
+void Stateful::pause() {
     state = State::Paused;
 }

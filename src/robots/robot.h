@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../components/button.h"
-#include "../components/stateful_devices/motors/servo.h"
+#include "../components/motors/servo.h"
 #include "../globals/config.h"
 #include "../utils/waiter.h"
 

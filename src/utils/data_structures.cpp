@@ -2,18 +2,14 @@
 
 template <class T>
 CircularArray<T>::CircularArray(int size) {
-    this->size = this->max(0, size);
+    this->size = max(0, size);
     index = size - 1;
     values = new T[size];
 }
 
 template <class T>
 T& CircularArray<T>::operator[](int i) {
-    i = (index + i) % size;
-    if (i < 0) {
-        i += size;
-    }
-    return values[i];
+    return values[this->mod(index + i, size)];
 }
 
 template <class T>
@@ -27,7 +23,7 @@ AverageCircularArray<T>::AverageCircularArray(int size, T initValue, int periods
     for (int i = 0; i < size; ++i) {
         (*this)[i] = initValue;
     }
-    this->periods = this->constrain(periods, 0, size);
+    this->periods = constrain(periods, 0, size);
 }
 
 template <class T>

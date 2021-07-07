@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../utils/waiter.h"
+#include "waiter.h"
 
-class StatefulDevice {
+class Stateful {
    protected:
     enum class State { Done,
                        Waiting,
@@ -12,7 +12,7 @@ class StatefulDevice {
     Waiter waiter;
     State state;
 
-    StatefulDevice();
+    Stateful();
 
     bool initLoop();
 

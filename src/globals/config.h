@@ -18,6 +18,7 @@ const int SERVO_3_INIT_POS = 180;
 const int SERVO_4_INIT_POS = 35;
 const int SERVO_5_INIT_POS = 90;
 
+const int SERVO_MIN_POS = 0;
 const int SERVO_MAX_POS = 180;
 
 const int STEPPER_STEPS = 200;
