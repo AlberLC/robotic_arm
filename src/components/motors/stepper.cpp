@@ -8,9 +8,8 @@ Stepper::Stepper(int pin, int steps, int initPos, int minPos, int maxPos, Potent
     this->potentiometer = potentiometer;
 
     if (this->potentiometer) {
-        int pos = potentiometer->read();
-        currentPos = pos;
-        roundedCurrentPos = pos;
+        currentPos = potentiometer->read();
+        roundedCurrentPos = currentPos;
     }
 }
 
