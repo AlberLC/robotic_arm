@@ -14,7 +14,11 @@ Stepper::Stepper(int pin, int steps, int initPos, int minPos, int maxPos, Potent
 }
 
 int Stepper::getCurrentPos() {
-    return map(Motor::getCurrentPos(), potentiometer->getMinLimit(), potentiometer->getMaxLimit(), getMinPos(), getMaxPos());
+    if (potentiometer) {
+        return map(Motor::getCurrentPos(), potentiometer->getMinLimit(), potentiometer->getMaxLimit(), getMinPos(), getMaxPos());
+    } else {
+        return Motor::getCurrentPos();
+    }
 }
 
 int Stepper::getPotentiometerPos() {
