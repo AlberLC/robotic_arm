@@ -9,6 +9,11 @@ MyServo::MyServo(int pin, int initPos, int minPos, int maxPos) : Motor(pin, init
     servo->attach(pin);
 }
 
+void setPin(int pin) {
+    Component::setPin(pin);
+    servo->attach(pin);
+}
+
 int MyServo::calculateAngularDistance(int startPos, int finalPos) {
     return finalPos - startPos;
 }

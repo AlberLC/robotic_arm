@@ -30,6 +30,7 @@ class ServoTool : public MyServo {
     ServoTool(int pin, int minPos = UNDEFINED, int maxPos = UNDEFINED);
     ServoTool(int pin, int initPos, int minPos = UNDEFINED, int maxPos = UNDEFINED);
 
+    void setPin(int pin);
     void loop();
     void close();
     void open();
