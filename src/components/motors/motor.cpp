@@ -9,6 +9,11 @@ Motor::Motor(int pin, int initPos, int minPos, int maxPos) : Component(pin), Sta
     this->initPos = initPos;
     this->minPos = minPos;
     this->maxPos = maxPos;
+    if (minPos == UNDEFINED and maxPos != UNDEFINED) {
+        this->minPos = mod(this->maxPos - SERVO_LIMITS_SECURITY_SEPARATION, 360);
+    } else if (minPos != UNDEFINED and maxPos == UNDEFINED) {
+        this->maxPos = mod(this->minPos + SERVO_LIMITS_SECURITY_SEPARATION, 360);
+    }
     inInitPos = true;
     startPos = initPos;
     currentPos = initPos;
@@ -163,8 +168,10 @@ void Motor::loop() {
 }
 
 void Motor::moveToPosition(int finalPos) {
-    startPos = roundedCurrentPos;
     int d = calculateAngularDistance(startPos, finalPos);
+    if (d == UNDEFINED) return;
+
+    startPos = roundedCurrentPos;
     angularDistance = abs(d);
     direction = sign(d);
     elapsedSeconds = 0;
