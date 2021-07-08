@@ -1,5 +1,8 @@
 #include "motor.h"
 
+Motor::Motor(int pin, int minPos, int maxPos) : Motor(pin, UNDEFINED, minPos, maxPos) {
+}
+
 Motor::Motor(int pin, int initPos, int minPos, int maxPos) : Component(pin), Stateful() {
     state = State::Done;
 

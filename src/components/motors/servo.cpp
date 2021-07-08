@@ -1,5 +1,8 @@
 #include "servo.h"
 
+MyServo::MyServo(int pin, int minPos, int maxPos) : MyServo(pin, UNDEFINED, minPos, maxPos) {
+}
+
 MyServo::MyServo(int pin, int initPos, int minPos, int maxPos) : Motor(pin, initPos, minPos, maxPos) {
     servo = new Servo();
     servo->write(initPos);

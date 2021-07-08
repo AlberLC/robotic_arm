@@ -36,7 +36,8 @@ class Motor : public Stateful, public Component {
 
    public:
     using Component::Component;
-    Motor(int pin, int initPos, int minPos = -1, int maxPos = -1);
+    Motor(int pin, int minPos = UNDEFINED, int maxPos = UNDEFINED);
+    Motor(int pin, int initPos, int minPos = UNDEFINED, int maxPos = UNDEFINED);
 
     int getMinPos();
     void setMinPos(int minPos);

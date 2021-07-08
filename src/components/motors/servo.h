@@ -12,7 +12,8 @@ class MyServo : public Motor {
 
    public:
     using Motor::Motor;
-    MyServo(int pin, int initPos, int minPos = -1, int maxPos = -1);
+    MyServo(int pin, int minPos = UNDEFINED, int maxPos = UNDEFINED);
+    MyServo(int pin, int initPos, int minPos = UNDEFINED, int maxPos = UNDEFINED);
 
     void writeMotor(int pos) override;
 };
@@ -26,7 +27,8 @@ class ServoTool : public MyServo {
 
    public:
     using MyServo::MyServo;
-    ServoTool(int pin, int initPos, int minPos = -1, int maxPos = -1);
+    ServoTool(int pin, int minPos = UNDEFINED, int maxPos = UNDEFINED);
+    ServoTool(int pin, int initPos, int minPos = UNDEFINED, int maxPos = UNDEFINED);
 
     void loop();
     void close();

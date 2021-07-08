@@ -2,6 +2,7 @@
 
 #include "../components/button.h"
 #include "../components/motors/servo.h"
+#include "../components/motors/stepper.h"
 #include "../globals/config.h"
 #include "../utils/waiter.h"
 
@@ -11,12 +12,14 @@ class Robot {
                        Waiting,
                        Working };
 
-    ServoTool servoTool;
+    Stepper base;
+
     MyServo servo1;
     MyServo servo2;
     MyServo servo3;
     MyServo servo4;
     MyServo servo5;
+    ServoTool servoTool;
 
     State state;
     Waiter waiter;
