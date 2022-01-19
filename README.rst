@@ -7,8 +7,8 @@ Arduino code for a 3D printed robotic arm.
 
 |
 
-v0.1
-----
+v0.1.0
+------
 
 |image_v1_1|
 |image_v1_2|
